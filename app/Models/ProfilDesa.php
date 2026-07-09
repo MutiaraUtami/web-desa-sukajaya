@@ -6,15 +6,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class ProfilDesa extends Model
 {
-    // Wajib ditambahin biar Laravel tau nama aslinya
-    protected $table = 'profil_desa';
+    use HasFactory;
+
+    protected $table = 'profil_desas';
 
     protected $fillable = [
-        'nama_desa',
-        'logo',
-        'sejarah',
-        'visi',
-        'misi',
-        'geografis'
+        'nama_desa', 'sambutan', 'visi', 'misi', 'sejarah', 'geografis',
+        'luas_wilayah', 'batas_utara', 'batas_selatan', 'batas_timur', 'batas_barat',
+        'peta_embed', 'alamat_kantor', 'telepon', 'email',
     ];
+
+    public static function get(): self
+    {
+        return static::first() ?? static::create([]);
+    }
 }
