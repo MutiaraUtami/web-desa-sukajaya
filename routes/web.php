@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ProfilDesaController;
 // use Illuminate\Support\Facades\Route;
 
 // Route::view('/', 'welcome')->name('home');
@@ -45,14 +46,11 @@ Route::get('/berita/{slug}', [PageController::class, 'beritaShow'])->name('berit
 Route::get('/umkm', UmkmList::class)->name('umkm');
 Route::get('/apbdes', ApbdesView::class)->name('apbdes');
 
-/*
-|--------------------------------------------------------------------------
-| AUTH (Login Admin)
-|--------------------------------------------------------------------------
-*/
-Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
-Route::post('/login', [LoginController::class, 'login'])->name('login.submit');
-Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::view('dashboard', 'dashboard')->name('dashboard');
+    Route::get('/profil-desa', [ProfilDesaController::class, 'index'])->name('profil-desa.index');
+    Route::post('/profil-desa/update', [ProfilDesaController::class, 'update'])->name('profil-desa.update');
+    });
 
 /*
 |--------------------------------------------------------------------------
