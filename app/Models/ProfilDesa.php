@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class ProfilDesa extends Model
 {
-    use HasFactory;
 
     protected $table = 'profil_desas';
 
@@ -16,8 +15,8 @@ class ProfilDesa extends Model
         'peta_embed', 'alamat_kantor', 'telepon', 'email',
     ];
 
-    public static function get(): self
+   public static function get(): self
     {
-        return static::first() ?? static::create([]);
+    return static::query()->firstOrCreate([]);
     }
 }

@@ -25,9 +25,10 @@ class Berita extends Model
                 $slug = Str::slug($berita->judul);
                 $original = $slug;
                 $i = 1;
-                while (static::where('slug', $slug)->exists()) {
-                    $slug = $original . '-' . $i++;
-                }
+              
+            while (static::query()->where('slug', $slug)->exists()) {
+                $slug = $original . '-' . $i++;
+            }
                 $berita->slug = $slug;
             }
         });
