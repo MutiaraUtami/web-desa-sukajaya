@@ -2,18 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-
-namespace App\Models;
-
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class ProfilDesa extends Model
 {
-    use HasFactory;
-
+    // Wajib ditambahin biar Laravel tau nama aslinya
     protected $table = 'profil_desa';
 
     protected $fillable = [
