@@ -1,65 +1,89 @@
-<section class="relative min-h-[400px] md:h-[600px] overflow-hidden bg-zinc-900 text-white flex flex-col justify-between">
+<section class="relative min-h-[560px] md:h-[600px] overflow-hidden bg-zinc-900 text-white flex flex-col justify-between">
     
     <div class="absolute inset-0 z-0">
         <div class="slide-item absolute inset-0 opacity-100 transition-opacity duration-1000 ease-in-out">
-            <div class="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-transparent z-10"></div>
+            <div class="absolute inset-0 bg-gradient-to-r from-black/70 to-transparent z-10"></div>
             <img src="{{ asset('images/slider-1.jpeg') }}" alt="Rapat Minggon" class="w-full h-full object-cover">
         </div>
         
         <div class="slide-item absolute inset-0 opacity-0 transition-opacity duration-1000 ease-in-out">
-            <div class="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-transparent z-10"></div>
-            <img src="{{ asset('images/slider-2.jpeg') }}" alt="Wisata Gunung Sembung" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-r from-black/70 to-transparent z-10"></div>
+            <img src="{{ asset('images/slider-2.jpeg') }}" alt="Wisata Gn. Sembung" class="w-full h-full object-cover">
         </div>
         
         <div class="slide-item absolute inset-0 opacity-0 transition-opacity duration-1000 ease-in-out">
-            <div class="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-transparent z-10"></div>
+            <div class="absolute inset-0 bg-gradient-to-r from-black/70 to-transparent z-10"></div>
             <img src="{{ asset('images/slider-3.jpeg') }}" alt="Kantor Desa Sukajaya" class="w-full h-full object-cover">
         </div>
     </div>
 
-    <div class="relative z-10 max-w-7xl mx-auto w-full px-6 md:px-12 grid grid-cols-1 md:grid-cols-12 gap-6 items-center flex-grow pt-2 pb-0">
+    <div class="absolute inset-x-0 bottom-0 z-20 pointer-events-none select-none">
+        <svg
+            viewBox="0 0 1440 446"
+            class="w-full h-auto"
+            preserveAspectRatio="none"
+            xmlns="http://www.w3.org/2000/svg"
+        >
+            <path
+                d="M0 445.823C6.65678 445.864 13.3235 445.886 20 445.886H20C647.905 445.886 1189.61 263.465 1440 0V445.886H20H0V445.823Z"
+                fill="#1e6306"
+            />
+        </svg>
+    </div>
+
+    <div class="relative z-20 max-w-7xl mx-auto w-full px-6 md:px-12 grid grid-cols-1 md:grid-cols-12 gap-6 items-center flex-grow pt-12 md:pt-0">
         
-        <div class="md:col-span-7 text-left flex flex-col justify-center">
-            <span class="w-max text-sm md:text-base font-semibold tracking-wider text-green-200 border border-green-200 bg-green-500/10 uppercase px-3 py-1 rounded-full mb-2 drop-shadow-md">
+        <div class="md:col-span-7 text-left flex flex-col justify-center z-20">
+            <span class="w-max text-xs md:text-sm font-bold tracking-wide text-white bg-[#1e6306] px-3 py-1 rounded-md mb-4 shadow-sm">
                 Digitalisasi Desa
             </span>
             
-            <h1 class="font-extrabold text-3xl md:text-5xl lg:text-6xl text-white leading-tight drop-shadow-lg mb-4">
+            <h1 class="font-extrabold text-4xl md:text-6xl text-white leading-[1.15] drop-shadow-md mb-6">
                 Selamat Datang <br>di Website<br>
-                <span class="text-emerald-100">Desa Sukajaya</span>
+                <span class="text-[#fac81b]">Desa Sukajaya</span>
             </h1>
             
-            <p class="max-w-xl text-sm md:text-base text-zinc-200 font-normal tracking-wide drop-shadow-md">
+            <p class="max-w-xl text-sm md:text-base text-white/95 font-medium tracking-wide leading-relaxed drop-shadow">
                 {{ $profil->sambutan ?? 'Website resmi desa untuk informasi, transparansi, dan pelayanan publik secara digital.' }}
             </p>
         </div>
 
-        <div class="md:col-span-5 h-full flex items-end justify-center md:justify-end relative overflow-visible group">
-            <!-- Foto Kepala Desa -->
+        <div class="md:col-span-5 h-full flex items-end justify-center md:justify-end relative min-h-[300px] md:min-h-auto">
             <img src="{{ asset('images/kepala-desa.png') }}" 
                 alt="Kepala Desa Sukajaya" 
-                class="max-h-[420px] md:max-h-[560px] lg:max-h-[610px] object-contain object-bottom drop-shadow-[0_10px_25px_rgba(0,0,0,0.5)] z-20 transform scale-105 origin-bottom transition-all duration-300 group-hover:scale-110">
+                class="h-[280px] sm:h-[350px] md:h-[480px] lg:h-[540px] object-contain object-cover z-20 drop-shadow-[0_4px_15px_rgba(0,0,0,0.3)] select-none">
 
-            <!-- Label Mengapung Keterangan Kepala Desa -->
-            <div class="absolute bottom-27 left-10/2 -translate-x-10/2 md:left-auto md:right-4 md:translate-x-0 z-30 bg-black/60 border border-white/10 backdrop-blur-md px-4 py-2.5 rounded-2xl shadow-xl flex flex-col gap-0.5 animate-bounce-slow text-center md:text-left min-w-[180px]">
-                <span class="text-[18px] uppercase tracking-widest text-emerald-300 font-bold">
+                
+            <div class="absolute bottom-9 left-1/2 -translate-x-1/2 md:left-auto md:right-0 md:translate-x-0 z-30 bg-white border-t-4 border-[#fac81b] px-5 py-3 rounded-md shadow-2xl flex flex-col min-w-[200px] text-center md:text-left">
+                <span class="text-xs uppercase tracking-wider text-[#1e6306] font-extrabold">
                     Kepala Desa
                 </span>
-                <span class="text-[16px] md:text-sm font-semibold text-white tracking-wide whitespace-nowrap">
-                    Nama Kepala Desa, S.Sos <!-- Silakan sesuaikan nama di sini -->
+                <span class="text-sm font-bold text-zinc-800 tracking-wide mt-0.5 whitespace-nowrap">
+                    {{ $profil->nama_kades ?? 'Nirwan Suherman' }}
                 </span>
             </div>
         </div>
     </div>
 
-    <div class="relative z-30 bg-gradient-to-t from-black/80 to-transparent pt-6 pb-6 px-6">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+    <div class="relative z-50 bg-[#0e2206] w-full border-t border-white/5">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-stretch justify-between">
             
-            <div class="flex flex-col items-center md:items-end gap-2 text-center md:text-right">
-                <p id="slide-caption" class="text-[11px] md:text-xs text-zinc-300 font-medium tracking-wider uppercase bg-black/40 px-3 py-1 rounded-full backdrop-blur-xs transition-all duration-500">
+            <div class="flex-grow flex items-center bg-[#0e2206] py-3 px-6 overflow-hidden min-h-[50px]">
+                <span class="bg-[#1e6306] text-white text-xs font-bold uppercase tracking-wider px-3 py-1.5 rounded mr-4 whitespace-nowrap shadow-sm">
+                    Pengumuman
+                </span>
+                <div class="relative w-full overflow-hidden whitespace-nowrap flex items-center">
+                    <div class="inline-block animate-[marquee_25s_linear_infinite] text-sm text-white font-medium tracking-wide">
+                        Selamat Datang di Website Resmi Desa Sukajaya. Website ini hadir sebagai wujud transparansi, pusat kebugaran informasi, dan kemudahan pelayanan publik bagi seluruh warga. &nbsp;&nbsp;&nbsp;&nbsp; • &nbsp;&nbsp;&nbsp;&nbsp; 
+                    </div>
+                </div>
+            </div>
+
+            <div class="hidden md:flex items-center gap-4 bg-black/20 px-6 py-3 border-l border-white/5 min-w-[250px] justify-end">
+                <p id="slide-caption" class="text-[11px] text-zinc-300 font-semibold tracking-wider uppercase whitespace-nowrap">
                     Rapat Minggon
                 </p>
-                <div class="flex gap-2">
+                <div class="flex gap-2 items-center">
                     <span class="slide-dot w-6 h-1.5 rounded-full bg-white transition-all duration-300 cursor-pointer" onclick="goToSlide(0)"></span>
                     <span class="slide-dot w-2 h-1.5 rounded-full bg-white/40 transition-all duration-300 cursor-pointer" onclick="goToSlide(1)"></span>
                     <span class="slide-dot w-2 h-1.5 rounded-full bg-white/40 transition-all duration-300 cursor-pointer" onclick="goToSlide(2)"></span>
@@ -69,6 +93,16 @@
         </div>
     </div>
 </section>
+
+<style>
+    @keyframes marquee {
+        0% { transform: translateX(100%); }
+        100% { transform: translateX(-100%); }
+    }
+    .animate-marquee {
+        animation: marquee 25s linear infinite;
+    }
+</style>
 
 <script>
     let currentSlide = 0;
@@ -82,15 +116,19 @@
     function updateSliderVisuals() {
         slides.forEach((slide, index) => {
             if (index === currentSlide) {
-                slide.classList.remove('opacity-0');
+                slide.classList.remove('opacity-0', 'pointer-events-none');
                 slide.classList.add('opacity-100');
-                dots[index].classList.remove('bg-white/40', 'w-2');
-                dots[index].classList.add('bg-white', 'w-6');
+                if(dots[index]) {
+                    dots[index].classList.remove('bg-white/40', 'w-2');
+                    dots[index].classList.add('bg-white', 'w-6');
+                }
             } else {
                 slide.classList.remove('opacity-100');
-                slide.classList.add('opacity-0');
-                dots[index].classList.remove('bg-white', 'w-6');
-                dots[index].classList.add('bg-white/40', 'w-2');
+                slide.classList.add('opacity-0', 'pointer-events-none');
+                if(dots[index]) {
+                    dots[index].classList.remove('bg-white', 'w-6');
+                    dots[index].classList.add('bg-white/40', 'w-2');
+                }
             }
         });
 
