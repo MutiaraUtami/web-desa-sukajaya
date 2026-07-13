@@ -2,15 +2,20 @@
 
 namespace App\Livewire\Frontend;
 
-use App\Models\StatistikPenduduk;
 use Livewire\Component;
+use App\Models\StatistikPenduduk;
+use Livewire\Attributes\Layout;
 
+#[Layout('components.layouts.app')] // Nempelin ke layout utama (navbar & footer)
 class DemografisView extends Component
 {
     public function render()
     {
-        return view('livewire.frontend.demografis-view', [
-            'statistik' => StatistikPenduduk::orderByDesc('tahun')->get(),
-        ])->layout('layouts.app');
+        // Tarik data, urutkan dari tahun terbaru, lalu berdasarkan Dusun/RW
+        $statistik = StatistikPenduduk::orderBy('tahun', 'desc')
+                                      ->orderBy('dusun_rw', 'asc')
+                                      ->get();
+
+        return view('livewire.frontend.demografis-view', compact('statistik'));
     }
 }

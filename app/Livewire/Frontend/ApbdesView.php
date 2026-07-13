@@ -2,26 +2,42 @@
 
 namespace App\Livewire\Frontend;
 
-use App\Models\Apbdes;
 use Livewire\Component;
+use App\Models\Apbdes;
+use Livewire\Attributes\Layout;
 
+#[Layout('components.layouts.app')]
 class ApbdesView extends Component
 {
-    public $tahun;
+    public $tahun; // Variabel yang di-bind ke dropdown (wire:model.live)
 
     public function mount()
     {
-        $this->tahun = Apbdes::max('tahun_anggaran') ?? date('Y');
+        // Saat halaman pertama kali dibuka, cari tahun paling terbaru di database
+        $tahunTerbaru = Apbdes::max('tahun_anggaran');
+        
+        // Set nilai default ke tahun terbaru (atau tahun saat ini jika database kosong)
+        $this->tahun = $tahunTerbaru ?? date('Y');
     }
 
     public function render()
     {
-        $data = Apbdes::where('tahun_anggaran', $this->tahun)->orderBy('jenis')->get()->groupBy('jenis');
-        $tahunList = Apbdes::select('tahun_anggaran')->distinct()->orderByDesc('tahun_anggaran')->pluck('tahun_anggaran');
+        // 1. Ambil daftar tahun unik dari database untuk isi dropdown
+        $tahunList = Apbdes::select('tahun_anggaran')
+                           ->distinct()
+                           ->orderBy('tahun_anggaran', 'desc')
+                           ->pluck('tahun_anggaran');
 
-        return view('livewire.frontend.apbdes-view', [
-            'data' => $data,
-            'tahunList' => $tahunList,
-        ])->layout('layouts.app');
+        // 2. Ambil data APBDes KHUSUS untuk tahun yang dipilih di dropdown
+        $rawData = Apbdes::query()->where('tahun_anggaran', $this->tahun)->get();
+        
+        // 3. Kelompokkan data biar Muti gampang nge-loop di frontend
+        $data = [
+            'pendapatan' => $rawData->where('jenis', 'pendapatan'),
+            'belanja'    => $rawData->where('jenis', 'belanja'),
+            'pembiayaan' => $rawData->where('jenis', 'pembiayaan'),
+        ];
+
+        return view('livewire.frontend.apbdes-blade', compact('tahunList', 'data'));
     }
 }
