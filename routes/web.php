@@ -1,19 +1,9 @@
 <?php
 
-use App\Http\Controllers\ProfilDesaController;
-// use Illuminate\Support\Facades\Route;
-
-// Route::view('/', 'welcome')->name('home');
-
-// Route::middleware(['auth', 'verified'])->group(function () {
-//     Route::view('dashboard', 'dashboard')->name('dashboard');
-// });
-
-// require __DIR__.'/settings.php';
-
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\ProfilDesaController;
 use App\Livewire\Admin\AgendaManager;
 use App\Livewire\Admin\ApbdesManager;
 use App\Livewire\Admin\BeritaManager;
@@ -46,13 +36,18 @@ Route::get('/berita/{slug}', [PageController::class, 'beritaShow'])->name('berit
 Route::get('/umkm', UmkmList::class)->name('umkm');
 Route::get('/apbdes', ApbdesView::class)->name('apbdes');
 
+/*
+|--------------------------------------------------------------------------
+| USER TEROTENTIKASI
+|--------------------------------------------------------------------------
+*/
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::view('dashboard', 'dashboard')->name('dashboard');
+    // Alihkan rute /dashboard bawaan langsung ke dashboard admin
+    Route::redirect('/dashboard', '/admin/dashboard')->name('dashboard');
+    
     Route::get('/profil-desa', [ProfilDesaController::class, 'index'])->name('profil-desa.index');
     Route::post('/profil-desa/update', [ProfilDesaController::class, 'update'])->name('profil-desa.update');
-    Route::get('/profil-desa', [ProfilDesaController::class, 'index'])->name('profil-desa.index');
-    Route::post('/profil-desa/update', [ProfilDesaController::class, 'update'])->name('profil-desa.update');
-    });
+});
 
 /*
 |--------------------------------------------------------------------------
