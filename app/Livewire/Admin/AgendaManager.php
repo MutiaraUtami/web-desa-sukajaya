@@ -2,16 +2,19 @@
 
 namespace App\Livewire\Admin;
 
-use App\Models\Agenda;
 use Livewire\Component;
+use App\Models\Agenda;
 use Livewire\WithPagination;
+use Livewire\Attributes\Layout;
 
+#[Layout('components.layouts.admin')]
 class AgendaManager extends Component
 {
     use WithPagination;
 
-    public $item_id, $judul, $deskripsi, $tanggal, $waktu, $lokasi;
-    public bool $showModal = false;
+    public $judul, $deskripsi, $tanggal, $waktu, $lokasi;
+    public $item_id;
+    public $showModal = false;
 
     protected function rules()
     {
@@ -19,61 +22,76 @@ class AgendaManager extends Component
             'judul' => 'required|string|max:255',
             'deskripsi' => 'nullable|string',
             'tanggal' => 'required|date',
-            'waktu' => 'nullable',
+            'waktu' => 'nullable', // format time
             'lokasi' => 'nullable|string|max:255',
         ];
     }
 
     public function render()
     {
-        return view('livewire.admin.agenda-manager', [
-            'data' => Agenda::orderByDesc('tanggal')->paginate(10),
-        ])->layout('layouts.admin');
+        $data = Agenda::orderBy('tanggal', 'asc')->paginate(10);
+        return view('livewire.admin.agenda-manager', compact('data'));
     }
 
     public function create()
     {
-        $this->resetForm();
+        $this->resetFields();
         $this->showModal = true;
     }
 
     public function edit($id)
     {
+        $this->resetFields();
         $item = Agenda::findOrFail($id);
         $this->item_id = $item->id;
         $this->judul = $item->judul;
         $this->deskripsi = $item->deskripsi;
-        $this->tanggal = $item->tanggal->format('Y-m-d');
+        $this->tanggal = $item->tanggal;
         $this->waktu = $item->waktu;
         $this->lokasi = $item->lokasi;
+        
         $this->showModal = true;
     }
 
     public function save()
     {
-        $data = $this->validate();
-        Agenda::updateOrCreate(['id' => $this->item_id], $data);
+        $this->validate();
 
-        session()->flash('message', 'Agenda berhasil disimpan.');
-        $this->showModal = false;
-        $this->resetForm();
+        Agenda::updateOrCreate(
+            ['id' => $this->item_id],
+            [
+                'judul' => $this->judul,
+                'deskripsi' => $this->deskripsi,
+                'tanggal' => $this->tanggal,
+                'waktu' => $this->waktu,
+                'lokasi' => $this->lokasi,
+            ]
+        );
+
+        session()->flash('message', 'Agenda kegiatan berhasil disimpan!');
+        $this->closeModal();
     }
 
     public function delete($id)
     {
         Agenda::findOrFail($id)->delete();
-        session()->flash('message', 'Agenda berhasil dihapus.');
-    }
-
-    public function resetForm()
-    {
-        $this->reset(['item_id', 'judul', 'deskripsi', 'tanggal', 'waktu', 'lokasi']);
-        $this->resetErrorBag();
+        session()->flash('message', 'Agenda berhasil dihapus!');
     }
 
     public function closeModal()
     {
         $this->showModal = false;
-        $this->resetForm();
+        $this->resetFields();
+    }
+
+    public function resetFields()
+    {
+        $this->item_id = null;
+        $this->judul = '';
+        $this->deskripsi = '';
+        $this->tanggal = '';
+        $this->waktu = '';
+        $this->lokasi = '';
+        $this->resetErrorBag();
     }
 }
