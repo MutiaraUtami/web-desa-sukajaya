@@ -1,34 +1,6 @@
 <div class="max-w-5xl mx-auto px-4 py-10">
     <h1 class="text-2xl font-bold mb-6">Demografis &amp; Statistik Penduduk</h1>
 
-    <!-- Card Informasi Dasar Demografis -->
-    <div class="bg-white rounded shadow p-6 mb-8">
-        <h2 class="text-lg font-semibold text-gray-800 mb-4 border-b pb-2">Informasi Dasar Desa</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div>
-                <p class="text-sm text-gray-500 font-medium mb-1">Jumlah Penduduk</p>
-                <p class="text-lg font-bold text-gray-900">4.749 Jiwa</p>
-            </div>
-            <div>
-                <p class="text-sm text-gray-500 font-medium mb-1">Mata Pencaharian Utama</p>
-                <p class="text-base text-gray-800">Petani, Buruh Tani, Buruh Pabrik</p>
-            </div>
-            <div>
-                <p class="text-sm text-gray-500 font-medium mb-1">Perekonomian</p>
-                <p class="text-base text-gray-800">Pabrik, Sawah, Kebun</p>
-            </div>
-            <div>
-                <p class="text-sm text-gray-500 font-medium mb-1">Sarana Pendidikan</p>
-                <p class="text-base text-gray-800 uppercase">PAUD, TK, SD, SMP</p>
-            </div>
-            <div>
-                <p class="text-sm text-gray-500 font-medium mb-1">Tempat Ibadah</p>
-                <p class="text-base text-gray-800">Masjid</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Tabel Statistik Penduduk -->
     <div class="overflow-x-auto bg-white rounded shadow">
         <table class="min-w-full text-sm">
             <thead class="bg-gray-100">

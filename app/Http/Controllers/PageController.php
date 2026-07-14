@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Berita;
 use App\Models\Organisasi;
 use App\Models\ProfilDesa;
+use App\Models\OrganizationChart;
 
 class PageController extends Controller
 {
@@ -39,7 +40,8 @@ class PageController extends Controller
     public function strukturOrganisasi()
     {
         return view('pages.struktur-organisasi', [
-            'organisasi' => Organisasi::orderBy('urutan')->get(),
+            'organisasi' => Organisasi::orderBy('urutan', 'asc')->get(),
+            'bagan' => OrganizationChart::first() // Mengambil gambar bagan pertama/terbaru
         ]);
     }
 

@@ -15,6 +15,7 @@ use App\Livewire\Frontend\AgendaList;
 use App\Livewire\Frontend\ApbdesView;
 use App\Livewire\Frontend\BeritaList;
 use App\Livewire\Frontend\DemografisView;
+use App\Livewire\Frontend\StatistikView;
 use App\Livewire\Frontend\UmkmList;
 use Illuminate\Support\Facades\Route;
 
@@ -30,6 +31,7 @@ Route::get('/sejarah', [PageController::class, 'sejarah'])->name('sejarah');
 Route::get('/geografis', [PageController::class, 'geografis'])->name('geografis');
 Route::get('/struktur-organisasi', [PageController::class, 'strukturOrganisasi'])->name('struktur-organisasi');
 Route::get('/demografis', DemografisView::class)->name('demografis');
+Route::get('/statistik', StatistikView::class)->name('statistik');
 Route::get('/agenda', AgendaList::class)->name('agenda');
 Route::get('/berita', BeritaList::class)->name('berita');
 Route::get('/berita/{slug}', [PageController::class, 'beritaShow'])->name('berita.show');

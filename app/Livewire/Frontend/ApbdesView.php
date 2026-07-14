@@ -21,23 +21,17 @@ class ApbdesView extends Component
     }
 
     public function render()
-    {
-        // 1. Ambil daftar tahun unik dari database untuk isi dropdown
-        $tahunList = Apbdes::select('tahun_anggaran')
-                           ->distinct()
-                           ->orderBy('tahun_anggaran', 'desc')
-                           ->pluck('tahun_anggaran');
-
-        // 2. Ambil data APBDes KHUSUS untuk tahun yang dipilih di dropdown
-        $rawData = Apbdes::query()->where('tahun_anggaran', $this->tahun)->get();
-        
-        // 3. Kelompokkan data biar Muti gampang nge-loop di frontend
-        $data = [
-            'pendapatan' => $rawData->where('jenis', 'pendapatan'),
-            'belanja'    => $rawData->where('jenis', 'belanja'),
-            'pembiayaan' => $rawData->where('jenis', 'pembiayaan'),
-        ];
-
-        return view('livewire.frontend.apbdes-blade', compact('tahunList', 'data'));
+        {
+            // Mengambil data APBDes berdasarkan kolom 'tahun_anggaran' yang dipilih
+            $apbdes = \App\Models\Apbdes::where('tahun_anggaran', $this->tahun)->first();
+            
+            // Mengirim path file PDF ke view, atau null jika tidak ada
+            return view('livewire.frontend.apbdes-view', [
+                'pdfUrl' => $apbdes ? $apbdes->file_pdf : null, 
+                'tahunList' => \App\Models\Apbdes::select('tahun_anggaran')
+                                ->distinct()
+                                ->orderBy('tahun_anggaran', 'desc')
+                                ->pluck('tahun_anggaran')
+            ])->layout('components.layouts.app');
+        }
     }
-}

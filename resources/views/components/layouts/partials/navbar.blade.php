@@ -42,70 +42,76 @@
                 </div>
             </a>
             
-            <button class="md:hidden text-xl focus:outline-none" onclick="document.getElementById('menu').classList.toggle('hidden')">
+            <button class="md:hidden text-xl focus:outline-none p-1 border border-transparent rounded hover:border-white/30 transition" onclick="document.getElementById('menu').classList.toggle('hidden')">
                 ☰
             </button>
             
-            <div id="menu" class="hidden md:flex gap-6 text-sm flex-wrap items-center">
-                <div class="nav-item">
+            <div id="menu" class="hidden md:flex gap-6 text-sm flex-wrap items-center w-full md:w-auto">
+                <div class="nav-item w-full md:w-auto border-b md:border-none border-white/10 pb-2 md:pb-0">
                     <a href="{{ route('home') }}" class="hover:text-[#fac81b] py-2 block transition duration-200">Beranda</a>
                 </div>
                 
-                <div class="relative group nav-item">
-                    <button class="hover:text-[#fac81b] py-2 flex items-center gap-1 cursor-pointer focus:outline-none transition duration-200">
+                {{-- Dropdown 1 --}}
+                <div class="relative group nav-item w-full md:w-auto border-b md:border-none border-white/10 pb-2 md:pb-0">
+                    <button onclick="if(window.innerWidth < 768) { this.nextElementSibling.classList.toggle('hidden'); }" class="hover:text-[#fac81b] py-2 w-full md:w-auto flex justify-between items-center gap-1 cursor-pointer focus:outline-none transition duration-200">
                         Tentang Sukajaya 
                         <svg class="w-3 h-3 transition-transform duration-200 group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path>
                         </svg>
                     </button>
-                    <div class="absolute left-0 mt-0 w-48 bg-white text-[#313131] rounded-md shadow-lg py-2 hidden group-hover:block border border-gray-100 animate-fadeInMain">
-                        <a href="{{ route('profil') }}" class="block px-4 py-2 hover:bg-green-50 hover:text-[#1e6306] font-medium transition">Profil Desa</a>
-                        <a href="{{ route('sejarah') }}" class="block px-4 py-2 hover:bg-green-50 hover:text-[#1e6306] font-medium transition">Sejarah</a>
-                        <a href="{{ route('geografis') }}" class="block px-4 py-2 hover:bg-green-50 hover:text-[#1e6306] font-medium transition">Geografis</a>
-                        <a href="{{ route('demografis') }}" class="block px-4 py-2 hover:bg-green-50 hover:text-[#1e6306] font-medium transition">Demografis</a>
+                    {{-- class "hidden" di-toggle via JS saat mobile, otomatis terbuka saat hover (group-hover) di Desktop --}}
+                    <div class="hidden md:group-hover:block static md:absolute left-0 mt-0 w-full md:w-48 bg-black/20 md:bg-white text-gray-200 md:text-[#313131] rounded-md shadow-none md:shadow-lg py-2 md:border md:border-gray-100 animate-fadeInMain">
+                        <a href="{{ route('profil') }}" class="block px-6 md:px-4 py-2 md:hover:bg-green-50 hover:text-[#fac81b] md:hover:text-[#1e6306] font-medium transition">Profil Desa</a>
+                        <a href="{{ route('sejarah') }}" class="block px-6 md:px-4 py-2 md:hover:bg-green-50 hover:text-[#fac81b] md:hover:text-[#1e6306] font-medium transition">Sejarah</a>
+                        <a href="{{ route('geografis') }}" class="block px-6 md:px-4 py-2 md:hover:bg-green-50 hover:text-[#fac81b] md:hover:text-[#1e6306] font-medium transition">Geografis</a>
+                        <a href="{{ route('demografis') }}" class="block px-6 md:px-4 py-2 md:hover:bg-green-50 hover:text-[#fac81b] md:hover:text-[#1e6306] font-medium transition">Demografis</a>
                     </div>
                 </div>
 
-                <div class="relative group nav-item">
-                    <button class="hover:text-[#fac81b] py-2 flex items-center gap-1 cursor-pointer focus:outline-none transition duration-200">
+                {{-- Dropdown 2 --}}
+                <div class="relative group nav-item w-full md:w-auto border-b md:border-none border-white/10 pb-2 md:pb-0">
+                    <button onclick="if(window.innerWidth < 768) { this.nextElementSibling.classList.toggle('hidden'); }" class="hover:text-[#fac81b] py-2 w-full md:w-auto flex justify-between items-center gap-1 cursor-pointer focus:outline-none transition duration-200">
                         Organisasi 
                         <svg class="w-3 h-3 transition-transform duration-200 group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path>
                         </svg>
                     </button>
-                    <div class="absolute left-0 mt-0 w-48 bg-white text-[#313131] rounded-md shadow-lg py-2 hidden group-hover:block border border-gray-100">
-                        <a href="{{ route('struktur-organisasi') }}" class="block px-4 py-2 hover:bg-green-50 hover:text-[#1e6306] font-medium transition">Struktur Organisasi</a>
-                        <a href="#" class="block px-4 py-2 hover:bg-green-50 hover:text-[#1e6306] font-medium transition">BPD</a>
-                        <a href="#" class="block px-4 py-2 hover:bg-green-50 hover:text-[#1e6306] font-medium transition">PKK</a>
+                    <div class="hidden md:group-hover:block static md:absolute left-0 mt-0 w-full md:w-48 bg-black/20 md:bg-white text-gray-200 md:text-[#313131] rounded-md shadow-none md:shadow-lg py-2 md:border md:border-gray-100">
+                        <a href="{{ route('struktur-organisasi') }}" class="block px-6 md:px-4 py-2 md:hover:bg-green-50 hover:text-[#fac81b] md:hover:text-[#1e6306] font-medium transition">Struktur Organisasi</a>
+                        <a href="#" class="block px-6 md:px-4 py-2 md:hover:bg-green-50 hover:text-[#fac81b] md:hover:text-[#1e6306] font-medium transition">BPD</a>
+                        <a href="#" class="block px-6 md:px-4 py-2 md:hover:bg-green-50 hover:text-[#fac81b] md:hover:text-[#1e6306] font-medium transition">PKK</a>
                     </div>
                 </div>
 
-                <div class="relative group nav-item">
-                    <button class="hover:text-[#fac81b] py-2 flex items-center gap-1 cursor-pointer focus:outline-none transition duration-200">
+                {{-- Dropdown 3 --}}
+                <div class="relative group nav-item w-full md:w-auto border-b md:border-none border-white/10 pb-2 md:pb-0">
+                    <button onclick="if(window.innerWidth < 768) { this.nextElementSibling.classList.toggle('hidden'); }" class="hover:text-[#fac81b] py-2 w-full md:w-auto flex justify-between items-center gap-1 cursor-pointer focus:outline-none transition duration-200">
                         Informasi 
                         <svg class="w-3 h-3 transition-transform duration-200 group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path>
                         </svg>
                     </button>
-                    <div class="absolute left-0 mt-0 w-48 bg-white text-[#313131] rounded-md shadow-lg py-2 hidden group-hover:block border border-gray-100">
-                        <a href="{{ route('agenda') }}" class="block px-4 py-2 hover:bg-green-50 hover:text-[#1e6306] font-medium transition">Agenda</a>
-                        <a href="{{ route('berita') }}" class="block px-4 py-2 hover:bg-green-50 hover:text-[#1e6306] font-medium transition">Berita</a>
-                        <a href="{{ route('apbdes') }}" class="block px-4 py-2 hover:bg-green-50 hover:text-[#1e6306] font-medium transition">APBDes</a>
-                        <a href="#" class="block px-4 py-2 hover:bg-green-50 hover:text-[#1e6306] font-medium transition">Galeri</a>
+                    <div class="hidden md:group-hover:block static md:absolute left-0 mt-0 w-full md:w-48 bg-black/20 md:bg-white text-gray-200 md:text-[#313131] rounded-md shadow-none md:shadow-lg py-2 md:border md:border-gray-100">
+                        <a href="{{ route('agenda') }}" class="block px-6 md:px-4 py-2 md:hover:bg-green-50 hover:text-[#fac81b] md:hover:text-[#1e6306] font-medium transition">Agenda</a>
+                        <a href="{{ route('berita') }}" class="block px-6 md:px-4 py-2 md:hover:bg-green-50 hover:text-[#fac81b] md:hover:text-[#1e6306] font-medium transition">Berita</a>
+                        <a href="{{ route('apbdes') }}" class="block px-6 md:px-4 py-2 md:hover:bg-green-50 hover:text-[#fac81b] md:hover:text-[#1e6306] font-medium transition">APBDes</a>
+                        <a href="#" class="block px-6 md:px-4 py-2 md:hover:bg-green-50 hover:text-[#fac81b] md:hover:text-[#1e6306] font-medium transition">Galeri</a>
                     </div>
                 </div>
 
-                <div class="nav-item">
+                <div class="nav-item w-full md:w-auto pb-2 md:pb-0">
                     <a href="{{ route('umkm') }}" class="hover:text-[#fac81b] py-2 block transition duration-200">UMKM</a>
                 </div>
 
-                @auth
-                    <a href="{{ route('admin.dashboard') }}" class="font-semibold bg-[#313131] text-white px-4 py-2 rounded-md hover:bg-zinc-800 transition shadow-md">Dashboard Admin</a>
-                @else
-                    <a href="{{ route('login') }}" class="font-semibold bg-[#0e2206] text-white px-5 py-2 rounded-md hover:text-[#fac81b] transition-all duration-200 shadow-md hover:shadow-lg hover:-translate-y-0.5 text-center">
-                        Login
-                    </a>
-                @endauth
+                <div class="w-full md:w-auto pt-2 md:pt-0">
+                    @auth
+                        <a href="{{ route('admin.dashboard') }}" class="block w-full md:w-auto text-center font-semibold bg-[#313131] text-white px-4 py-2 rounded-md hover:bg-zinc-800 transition shadow-md">Dashboard Admin</a>
+                    @else
+                        <a href="{{ route('login') }}" class="block w-full md:w-auto text-center font-semibold bg-white md:bg-[#0e2206] text-[#1e6306] md:text-white px-5 py-2 rounded-md md:hover:text-[#fac81b] transition-all duration-200 shadow-md md:hover:shadow-lg md:hover:-translate-y-0.5">
+                            Login
+                        </a>
+                    @endauth
+                </div>
             </div>
         </div>
     </div>

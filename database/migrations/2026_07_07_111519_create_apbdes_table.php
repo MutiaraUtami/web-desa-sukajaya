@@ -17,6 +17,7 @@ return new class extends Migration
             $table->decimal('anggaran', 15, 2)->default(0);
             $table->decimal('realisasi', 15, 2)->default(0);
             $table->text('keterangan')->nullable();
+            $table->string('file_pdf')->nullable();
             $table->timestamps();
         });
     }

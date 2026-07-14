@@ -103,7 +103,7 @@ nav button {
     position: relative;
 }
 
-/* Membuat efek underline berjalan yang berlaku untuk link & tombol dropdown */
+/* Membua efek underline berjalan yang berlaku untuk link & tombol dropdown */
 .nav-item::after {
     content: "";
     position: absolute;
@@ -142,17 +142,20 @@ nav a[href*="admin/dashboard"]:hover {
 }
 
 /* Navigasi saat versi Mobile */
+/* Navigasi saat versi Mobile */
 @media (max-width: 767px) {
     #menu {
-        background-color: var(--color-brand-dark); /* Menggunakan Hijau Gelap */
+        background-color: var(--color-brand-dark, #0e2206);
         position: absolute;
         top: 100%;
         left: 0;
         right: 0;
-        padding: 1rem !important;
+        padding: 1.25rem 1rem !important; /* Padding yang lebih proporsional */
         flex-direction: column;
         align-items: flex-start !important;
-        gap: 0.5rem !important;
+        gap: 0.25rem !important; /* Jarak antar item lebih rapat, diatur oleh padding dalam */
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+        border-top: 1px solid rgba(255, 255, 255, 0.05); /* Pemisah tipis dari header */
     }
 
     #menu .relative,
@@ -160,54 +163,86 @@ nav a[href*="admin/dashboard"]:hover {
         width: 100%;
     }
 
-    /* Matikan garis bawah hover di HP agar tidak berantakan */
+    /* Matikan garis bawah hover di HP */
     .nav-item::after {
         display: none !important;
     }
 
+    /* Styling dasar link & tombol menu utama yang lebih clean */
     #menu a,
     #menu button {
-        display: block;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
         width: 100%;
-        padding: 0.75rem 0.5rem;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        padding: 0.875rem 1rem;
+        border-radius: 0.5rem; /* Sudut membulat agar terlihat modern saat disentuh */
         color: var(--color-white);
+        font-weight: 500;
+        border: none !important; /* Menghapus garis pemisah yang membuat sesak */
+        background-color: transparent;
     }
 
-    /* Di mobile, langsung buka submenu ke bawah tanpa hover melayang */
-    #menu .group-hover\:block {
-        display: block !important;
+    /* Efek saat item menu disentuh (Tap Highlight) */
+    #menu a:active,
+    #menu button:active {
+        background-color: rgba(255, 255, 255, 0.05);
+    }
+
+    /* Styling Submenu (Dropdown) ala Accordion Clean */
+    #menu .nav-item > div {
         position: relative !important;
-        width: 100% !important;
-        background-color: rgba(0, 0, 0, 0.2) !important;
+        width: calc(100% - 1rem) !important;
+        background-color: transparent !important; /* Dibuat transparan, tidak gelap */
         box-shadow: none !important;
-        padding-left: 1rem;
-        margin-top: 0.25rem;
+        padding: 0.25rem 0 0.25rem 1.5rem !important; /* Ruang untuk indentasi */
+        margin-top: 0;
+        margin-left: 1rem; /* Posisi garis hierarki */
         border: none !important;
+        border-left: 1px solid rgba(255, 255, 255, 0.15) !important; /* Garis tipis penanda submenu */
     }
 
-    #menu .group-hover\:block a {
-        color: rgba(255, 255, 255, 0.9) !important;
-        border: none !important;
-        padding: 0.5rem 0;
+    /* Item di dalam submenu */
+    #menu .nav-item > div a {
+        padding: 0.6rem 1rem !important;
+        font-size: 0.9rem;
+        color: rgba(
+            255,
+            255,
+            255,
+            0.7
+        ) !important; /* Warna sedikit redup untuk hierarki */
+        font-weight: 400;
     }
 
-    #menu .group-hover\:block a:hover {
+    #menu .nav-item > div a:hover,
+    #menu .nav-item > div a:active {
+        color: var(--color-brand-yellow, #fac81b) !important;
         background-color: transparent !important;
-        color: var(--color-brand-yellow) !important;
+    }
+
+    /* Tombol Aksi Utama (Login / Dashboard) di bagian bawah */
+    #menu a[href*="login"],
+    nav a[href*="admin/dashboard"] {
+        margin-top: 1rem;
+        padding: 0.875rem;
+        text-align: center;
+        justify-content: center;
+        border-radius: 0.5rem;
+        width: 100%;
     }
 
     #menu a[href*="login"] {
-        margin-top: 0.5rem;
-        width: 100%;
-        display: block;
-        box-shadow: none;
+        background-color: var(--color-white, #ffffff);
+        color: var(--color-brand-dark, #0e2206) !important;
+        font-weight: 600;
     }
 
     nav a[href*="admin/dashboard"] {
-        margin-top: 0.5rem;
-        text-align: center;
-        background-color: var(--color-brand-green);
+        background-color: var(--color-brand-green, #1e6306);
+        color: white !important;
+        font-weight: 600;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
     }
 }
 
