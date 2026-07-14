@@ -10,7 +10,7 @@
         // Mengelompokkan agenda berdasarkan tanggal (Y-m-d) agar bisa menampilkan judulnya
         $agendaByDate = [];
         foreach($agendas as $a) {
-            $dateKey = $a->tanggal->format('Y-m-d');
+            $dateKey = \Carbon\Carbon::parse($a->tanggal)->format('Y-m-d');
             if(!isset($agendaByDate[$dateKey])) {
                 $agendaByDate[$dateKey] = [];
             }
@@ -88,9 +88,9 @@
             <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 sm:p-5 flex flex-col sm:flex-row gap-5 hover:shadow-md transition-shadow duration-200">
                 
                 <div class="text-center bg-gradient-to-b from-[#1e6306] to-[#0e2206] text-white rounded-lg p-3 w-full sm:w-24 shrink-0 flex flex-col justify-center items-center">
-                    <div class="text-xs uppercase tracking-widest opacity-90 font-medium">{{ $a->tanggal->translatedFormat('M') }}</div>
-                    <div class="text-3xl font-extrabold my-0.5">{{ $a->tanggal->format('d') }}</div>
-                    <div class="text-xs opacity-75">{{ $a->tanggal->format('Y') }}</div>
+                    <div class="text-xs uppercase...">{{ \Carbon\Carbon::parse($a->tanggal)->translatedFormat('M') }}</div>
+                    <div class="text-3xl font-extrabold...">{{ \Carbon\Carbon::parse($a->tanggal)->format('d') }}</div>
+                    <div class="text-xs opacity-75">{{ \Carbon\Carbon::parse($a->tanggal)->format('Y') }}</div>
                 </div>
                 
                 <div class="flex-1 py-1 flex flex-col justify-center">
