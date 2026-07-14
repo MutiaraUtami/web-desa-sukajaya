@@ -9,29 +9,27 @@ use Livewire\Attributes\Layout;
 #[Layout('components.layouts.app')]
 class ApbdesView extends Component
 {
-    public $tahun; // Variabel yang di-bind ke dropdown (wire:model.live)
-
-    public function mount()
-    {
-        // Saat halaman pertama kali dibuka, cari tahun paling terbaru di database
-        $tahunTerbaru = Apbdes::max('tahun_anggaran');
-        
-        // Set nilai default ke tahun terbaru (atau tahun saat ini jika database kosong)
-        $this->tahun = $tahunTerbaru ?? date('Y');
-    }
+    public $tahun; // Variabel yang diikat ke dropdown
 
     public function render()
-        {
-            // Mengambil data APBDes berdasarkan kolom 'tahun_anggaran' yang dipilih
-            $apbdes = \App\Models\Apbdes::where('tahun_anggaran', $this->tahun)->first();
-            
-            // Mengirim path file PDF ke view, atau null jika tidak ada
-            return view('livewire.frontend.apbdes-view', [
-                'pdfUrl' => $apbdes ? $apbdes->file_pdf : null, 
-                'tahunList' => \App\Models\Apbdes::select('tahun_anggaran')
-                                ->distinct()
-                                ->orderBy('tahun_anggaran', 'desc')
-                                ->pluck('tahun_anggaran')
-            ])->layout('components.layouts.app');
+    {
+        // 1. Ambil semua tahun yang tersedia di database, urutkan dari terbaru
+        $tahunList = Apbdes::orderBy('tahun_anggaran', 'desc')->pluck('tahun_anggaran')->toArray();
+
+        // 2. Jika dropdown kosong (baru buka halaman), otomatis pilih tahun terbaru
+        if (!$this->tahun && count($tahunList) > 0) {
+            $this->tahun = $tahunList[0];
         }
+
+        // 3. Cari URL file PDF berdasarkan tahun yang dipilih di dropdown
+        $pdfUrl = null;
+        if ($this->tahun) {
+            $dataApbdes = Apbdes::where('tahun_anggaran', $this->tahun)->first();
+            if ($dataApbdes) {
+                $pdfUrl = $dataApbdes->file_pdf;
+            }
+        }
+
+        return view('livewire.frontend.apbdes-view', compact('tahunList', 'pdfUrl'));
     }
+}
