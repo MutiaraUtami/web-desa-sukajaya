@@ -2,7 +2,7 @@
     <h1 class="text-2xl font-bold mb-6 text-gray-800">APBDes (Anggaran Pendapatan dan Belanja Desa)</h1>
 
     <div class="mb-6 flex items-center bg-white p-4 rounded-lg shadow-sm border border-gray-100">
-        <label class="text-sm font-semibold text-gray-700 mr-3">Tahun Anggaran:</label>
+            <label class="text-sm font-semibold text-gray-700 mr-3">Tahun Anggaran:</label>
         <select wire:model.live="tahun" class="border border-gray-300 rounded-md p-2 text-sm focus:ring-[#1e6306] focus:border-[#1e6306] bg-gray-50 outline-none transition-colors min-w-[150px] cursor-pointer">
             @foreach ($tahunList as $t)
                 <option value="{{ $t }}">{{ $t }}</option>

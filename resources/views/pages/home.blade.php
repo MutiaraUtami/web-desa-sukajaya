@@ -56,7 +56,7 @@
                         <p class="text-[10px] tracking-wider uppercase text-[#fac81b] mb-1 font-semibold">
                             {{ optional($b->tanggal_terbit)->format('d M Y') }}
                         </p>
-                        <h3 class="font-bold text-base md:text-lg leading-tight line-clamp-3 group-hover:text-[#fac81b] transition-colors">
+                        <h3 class="font-bold text-base md:text-lg leading-tight text-white line-clamp-3 group-hover:text-[#fac81b] transition-colors">
                             {{ $b->judul }}
                         </h3>
                     </div>
@@ -127,16 +127,25 @@
 
     <!-- 4. SECTION PETA DESA -->
     <section class="max-w-6xl mx-auto px-4 pb-16">
-        <h2 class="text-2xl font-bold mb-6 text-[#313131] border-b-4 border-[#1e6306] pb-2 inline-block">Peta Wilayah Desa</h2>
-        <div class="w-full h-96 rounded-3xl overflow-hidden shadow-md border border-zinc-200 bg-zinc-100">
-            <iframe 
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3963.4474776822525!2d106.7450395!3d-6.5911476!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69c5007fcb9eb7%3A0x647bf7c9ad04db64!2sSukajaya!5e0!3m2!1sid!2sid!4v1710000000000!5m2!1sid!2sid" 
-                class="w-full h-full border-0" 
-                allowfullscreen="" 
-                loading="lazy" 
-                referrerpolicy="no-referrer-when-downgrade">
-            </iframe>
+    <h2 class="text-2xl font-bold mb-6 text-[#313131] border-b-4 border-[#1e6306] pb-2 inline-block">Peta Fasilitas Wilayah Desa</h2>
+    
+    <div class="w-full h-[500px] rounded-3xl overflow-hidden shadow-md border border-zinc-200 bg-zinc-100 relative group">
+        
+        <iframe 
+            src="https://www.google.com/maps/d/u/0/embed?mid=1-cOvqsP7cQ7sckZOyhQNKpQ2ybqMTSk&ehbc=2E312F" 
+            class="w-full h-full border-0" 
+            allowfullscreen="" 
+            loading="lazy" 
+            referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+        
+        <div class="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-lg shadow-sm border border-gray-100 text-xs font-medium text-gray-700 pointer-events-none">
+            <span class="inline-block w-3 h-3 bg-blue-500 rounded-full mr-1"></span> Sekolah &nbsp;
+            <span class="inline-block w-3 h-3 bg-green-500 rounded-full mr-1"></span> Rumah Ibadah &nbsp;
+            <span class="inline-block w-3 h-3 bg-yellow-500 rounded-full mr-1"></span> Industri
         </div>
-    </section>
+        
+    </div>
+</section>
 
 </x-layouts.app>

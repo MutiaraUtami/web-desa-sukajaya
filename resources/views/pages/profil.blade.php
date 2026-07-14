@@ -14,7 +14,7 @@
                     Profil Desa {{ $profil->nama_desa ?? 'Sukajaya' }}
                 </h1>
                 <p class="mt-3 max-w-2xl mx-auto text-gray-200">
-                    {{ $profil->sambutan ?? 'Selamat datang di Website Resmi Desa ' . ($profil->nama_desa ?? 'Sukajaya') . ', Kecamatan Sukatani, Kabupaten Purwakarta.' }}
+                    Selamat datang di Website Resmi Desa {{$profil->nama_desa ?? 'Sukajaya'}} Kecamatan Sukatani, Kabupaten Purwakarta.
                 </p>
             </div>
         </div>
