@@ -13,7 +13,7 @@ class ProfilDesa extends Model
     protected $fillable = [
         'nama_desa', 'sambutan', 'visi', 'misi', 'sejarah', 'geografis',
         'luas_wilayah', 'batas_utara', 'batas_selatan', 'batas_timur', 'batas_barat',
-        'peta_embed', 'alamat_kantor', 'telepon', 'email',
+        'peta_embed', 'alamat_kantor', 'telepon', 'email', 'tingkat_perkembangan',
     ];
 
    public static function get(): self

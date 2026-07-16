@@ -6,10 +6,26 @@
     @endif
 
     <form wire:submit.prevent="simpan" class="space-y-4">
-        <div>
-            <label class="block text-sm font-medium">Nama Desa</label>
-            <input type="text" wire:model="nama_desa" class="w-full border rounded p-2">
+        
+        <div class="grid grid-cols-2 gap-3">
+            <div>
+                <label class="block text-sm font-medium">Nama Desa</label>
+                <input type="text" wire:model="nama_desa" class="w-full border rounded p-2">
+            </div>
+            <div>
+                <label class="block text-sm font-medium">Tingkat Perkembangan Desa</label>
+                <select wire:model="tingkat_perkembangan" class="w-full border rounded p-2 bg-white">
+                    <option value="">-- Pilih Tingkat Perkembangan --</option>
+                    <option value="Swadaya">Swadaya</option>
+                    <option value="Swakarya">Swakarya</option>
+                    <option value="Swasembada">Swasembada</option>
+                </select>
+                @error('tingkat_perkembangan') 
+                    <span class="text-red-500 text-xs">{{ $message }}</span> 
+                @enderror
+            </div>
         </div>
+
         <div>
             <label class="block text-sm font-medium">Sambutan Hero Web (Paragraf Singkat)</label>
             <textarea wire:model="sambutan" rows="2" class="w-full border rounded p-2"></textarea>
@@ -30,6 +46,7 @@
             <label class="block text-sm font-medium">Potensi & Geografis Desa</label>
             <textarea wire:model="geografis" rows="4" class="w-full border rounded p-2" placeholder="Jelaskan kondisi alam dan potensi desa di sini"></textarea>
         </div>
+        
         <div class="grid grid-cols-2 gap-3">
             <div>
                 <label class="block text-sm font-medium">Luas Wilayah</label>
@@ -40,7 +57,9 @@
                 <input type="text" wire:model="peta_embed" class="w-full border rounded p-2" placeholder="https://www.google.com/maps/embed?...">
             </div>
         </div>
+        
         <hr>
+        
         <div class="grid grid-cols-3 gap-3">
             <div>
                 <label class="block text-sm font-medium">Alamat Kantor Desa</label>
@@ -55,6 +74,7 @@
                 <input type="email" wire:model="email" class="w-full border rounded p-2">
             </div>
         </div>
+        
         <div class="pt-4">
             <button type="submit" class="px-6 py-2 rounded bg-green-600 text-white font-bold hover:bg-green-700">Simpan Perubahan</button>
         </div>
