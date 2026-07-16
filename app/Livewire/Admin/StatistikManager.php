@@ -3,125 +3,107 @@
 namespace App\Livewire\Admin;
 
 use Livewire\Component;
-use Livewire\WithPagination;
 use App\Models\StatistikPenduduk;
 use Livewire\Attributes\Layout;
 
 #[Layout('components.layouts.admin')]
 class StatistikManager extends Component
 {
-    use WithPagination;
-
-    public $statistik_id;
-    // Menambahkan total_jiwa sebagai public property agar bisa diakses jika diperlukan
-    public $tahun, $dusun_rw, $jumlah_kk, $laki_laki, $perempuan, $total_jiwa;
-    public $usia_0_14, $usia_15_64, $usia_65_keatas, $keterangan;
-    
-    public $showModal = false;
-
-    // Aturan validasi form
-    protected function rules()
-    {
-        return [
-            'tahun' => 'required|integer',
-            'dusun_rw' => 'nullable|string|max:255',
-            'jumlah_kk' => 'required|integer|min:0',
-            'laki_laki' => 'required|integer|min:0',
-            'perempuan' => 'required|integer|min:0',
-            'usia_0_14' => 'nullable|integer|min:0',
-            'usia_15_64' => 'nullable|integer|min:0',
-            'usia_65_keatas' => 'nullable|integer|min:0',
-            'keterangan' => 'nullable|string',
-        ];
-    }
+    public $statistik_id, $tahun, $dusun_rw, $jumlah_kk, $laki_laki, $perempuan, $usia_0_14, $usia_15_64, $usia_65_keatas;
+    public $isModalOpen = false;
 
     public function render()
     {
-        // Menampilkan data urut berdasarkan tahun terbaru
-        $data = StatistikPenduduk::orderBy('tahun', 'desc')->paginate(10);
-        return view('livewire.admin.statistik-manager', compact('data'));
+        $statistik = StatistikPenduduk::orderBy('tahun', 'desc')->orderBy('dusun_rw', 'asc')->get();
+        return view('livewire.admin.statistik-manager', compact('statistik'));
     }
 
     public function create()
     {
         $this->resetFields();
-        $this->showModal = true;
+        $this->openModal();
+    }
+
+    public function openModal() { $this->isModalOpen = true; }
+    public function closeModal() { $this->isModalOpen = false; }
+
+    public function resetFields()
+    {
+        $this->statistik_id = null;
+        $this->tahun = date('Y');
+        $this->dusun_rw = '';
+        $this->jumlah_kk = 0;
+        $this->laki_laki = 0;
+        $this->perempuan = 0;
+        $this->usia_0_14 = 0;
+        $this->usia_15_64 = 0;
+        $this->usia_65_keatas = 0;
+    }
+
+    public function store()
+    {
+        $this->validate([
+            'tahun' => 'required|numeric',
+            'dusun_rw' => 'nullable|string',
+            'jumlah_kk' => 'required|numeric',
+            'laki_laki' => 'required|numeric',
+            'perempuan' => 'required|numeric',
+            'usia_0_14' => 'required|numeric',
+            'usia_15_64' => 'required|numeric',
+            'usia_65_keatas' => 'required|numeric',
+        ]);
+
+        // Cek apakah kombinasi Tahun dan Dusun/RW sudah ada di database
+        $cekDuplikat = StatistikPenduduk::where('tahun', $this->tahun)
+                                        ->where('dusun_rw', $this->dusun_rw);
+
+        // Kalau statusnya lagi "Edit" (bukan tambah baru), kecualikan data yang sedang diedit ini dari pengecekan
+        if ($this->statistik_id) {
+            $cekDuplikat->where('id', '!=', $this->statistik_id);
+        }
+
+        // Jika terdeteksi ada data yang sama persis
+        if ($cekDuplikat->exists()) {
+            session()->flash('error', "Gagal! Data untuk {$this->dusun_rw} pada tahun {$this->tahun} sudah ada. Silakan edit data yang sudah tersedia.");
+            $this->closeModal();
+            return; // Hentikan proses simpan
+        }
+
+        // Jika aman dari duplikat, baru simpan datanya
+        StatistikPenduduk::updateOrCreate(['id' => $this->statistik_id], [
+            'tahun' => $this->tahun,
+            'dusun_rw' => $this->dusun_rw,
+            'jumlah_kk' => $this->jumlah_kk,
+            'laki_laki' => $this->laki_laki,
+            'perempuan' => $this->perempuan,
+            'usia_0_14' => $this->usia_0_14,
+            'usia_15_64' => $this->usia_15_64,
+            'usia_65_keatas' => $this->usia_65_keatas,
+        ]);
+
+        session()->flash('message', $this->statistik_id ? 'Data Statistik diperbarui!' : 'Data Statistik ditambahkan!');
+        $this->closeModal();
+        $this->resetFields();
     }
 
     public function edit($id)
     {
-        $this->resetFields();
-        
-        $item = StatistikPenduduk::findOrFail($id);
-        $this->statistik_id = $item->id;
-        $this->tahun = $item->tahun;
-        $this->dusun_rw = $item->dusun_rw;
-        $this->jumlah_kk = $item->jumlah_kk;
-        $this->laki_laki = $item->laki_laki;
-        $this->perempuan = $item->perempuan;
-        $this->total_jiwa = $item->total_jiwa;
-        $this->usia_0_14 = $item->usia_0_14;
-        $this->usia_15_64 = $item->usia_15_64;
-        $this->usia_65_keatas = $item->usia_65_keatas;
-        $this->keterangan = $item->keterangan;
-        
-        $this->showModal = true;
-    }
-
-    public function save()
-    {
-        $this->validate();
-
-        // Hitung otomatis total jiwa
-        $this->total_jiwa = (int)$this->laki_laki + (int)$this->perempuan;
-
-        StatistikPenduduk::updateOrCreate(
-            ['id' => $this->statistik_id],
-            [
-                'tahun' => $this->tahun,
-                'dusun_rw' => $this->dusun_rw,
-                'jumlah_kk' => $this->jumlah_kk,
-                'laki_laki' => $this->laki_laki,
-                'perempuan' => $this->perempuan,
-                'total_jiwa' => $this->total_jiwa, 
-                'usia_0_14' => $this->usia_0_14 ?? 0,
-                'usia_15_64' => $this->usia_15_64 ?? 0,
-                'usia_65_keatas' => $this->usia_65_keatas ?? 0,
-                'keterangan' => $this->keterangan,
-            ]
-        );
-
-        session()->flash('message', $this->statistik_id ? 'Data statistik berhasil diupdate!' : 'Data statistik berhasil ditambahkan!');
-        
-        $this->closeModal();
+        $stat = StatistikPenduduk::findOrFail($id);
+        $this->statistik_id = $id;
+        $this->tahun = $stat->tahun;
+        $this->dusun_rw = $stat->dusun_rw;
+        $this->jumlah_kk = $stat->jumlah_kk;
+        $this->laki_laki = $stat->laki_laki;
+        $this->perempuan = $stat->perempuan;
+        $this->usia_0_14 = $stat->usia_0_14;
+        $this->usia_15_64 = $stat->usia_15_64;
+        $this->usia_65_keatas = $stat->usia_65_keatas;
+        $this->openModal();
     }
 
     public function delete($id)
     {
         StatistikPenduduk::findOrFail($id)->delete();
-        session()->flash('message', 'Data statistik berhasil dihapus!');
-    }
-
-    public function closeModal()
-    {
-        $this->showModal = false;
-        $this->resetFields();
-    }
-
-    public function resetFields()
-    {
-        $this->statistik_id = null;
-        $this->tahun = date('Y'); 
-        $this->dusun_rw = '';
-        $this->jumlah_kk = null;
-        $this->laki_laki = null;
-        $this->perempuan = null;
-        $this->total_jiwa = null;
-        $this->usia_0_14 = null;
-        $this->usia_15_64 = null;
-        $this->usia_65_keatas = null;
-        $this->keterangan = '';
-        
-        $this->resetErrorBag();
+        session()->flash('message', 'Data Statistik dihapus!');
     }
 }
