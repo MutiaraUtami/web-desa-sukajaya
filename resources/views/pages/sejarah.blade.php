@@ -15,82 +15,46 @@
                 </h1>
 
                 <p class="mt-4 max-w-2xl mx-auto text-lg text-gray-100">
-                    Mengenal perjalanan dan perkembangan
-                    Desa {{ $profil->nama_desa }},
-                    Kecamatan Sukatani, Kabupaten Purwakarta.
+                    Kisah transformasi dari kawasan tambang batu Gunung Sembung
+                    menjadi desa wisata kebanggaan di Purwakarta.
                 </p>
             </div>
         </div>
     </section>
 
-    {{-- Content --}}
+    {{-- Content (Narasi Baru) --}}
     <section class="bg-gray-50 py-16">
 
-        <div class="max-w-6xl mx-auto px-6">
+        <div class="max-w-4xl mx-auto px-6">
 
-            <div class="grid lg:grid-cols-2 gap-10 items-center">
+            {{-- Teks --}}
+            <div>
 
-                {{-- Gambar --}}
-                <div>
-                    <img
-                        src="{{ asset('images/sejarah-desa.jpg') }}"
-                        alt="Sejarah Desa"
-                        class="rounded-2xl shadow-xl w-full object-cover h-[420px]">
-                </div>
+                <span class="inline-block bg-[#fac81b] text-[#0e2206] font-semibold px-4 py-2 rounded-full mb-5">
+                    Sejarah Singkat
+                </span>
 
-                {{-- Teks --}}
-                <div>
+                <h2 class="text-3xl font-bold text-[#1e6306] mb-6">
+                    Perjalanan Desa {{ $profil->nama_desa }}
+                </h2>
 
-                    <span class="inline-block bg-[#fac81b] text-[#0e2206] font-semibold px-4 py-2 rounded-full mb-5">
-                        Sejarah Singkat
-                    </span>
+                <div class="space-y-5 text-[#313131] leading-8 text-justify">
 
-                    <h2 class="text-3xl font-bold text-[#1e6306] mb-6">
-                        Perjalanan Desa {{ $profil->nama_desa }}
-                    </h2>
+                    <p>
+                        Desa {{ $profil->nama_desa }} pada awalnya lebih dikenal sebagai kawasan <strong>Gunung Sembung</strong>, sebuah area pegunungan batu yang kokoh. Pada masa lampau, sebagian besar masyarakat desa menggantungkan mata pencahariannya dengan menambang batu di kawasan ini.
+                    </p>
 
-                    <div class="space-y-5 text-[#313131] leading-8 text-justify">
+                    <p>
+                        Karakteristik tanah yang berbatu dan keras di lereng gunung membuat area ini cukup sulit untuk ditanami. Hasil perkebunan atau pertanian tidak dapat tumbuh dengan optimal di atas struktur tanah tersebut. Kondisi alam yang menantang ini sempat menjadi kendala bagi kemajuan ekonomi warga, sehingga menuntut adanya inovasi dan perubahan arah gerak desa.
+                    </p>
 
-                        <p>
-                            Desa {{ $profil->nama_desa }} merupakan salah satu desa yang berada di
-                            wilayah Kecamatan Sukatani, Kabupaten Purwakarta,
-                            Provinsi Jawa Barat. Sejak awal perkembangannya,
-                            kehidupan masyarakat desa didominasi oleh aktivitas
-                            pertanian yang didukung oleh kondisi alam yang subur
-                            dan semangat gotong royong yang terus terpelihara
-                            hingga saat ini.
-                        </p>
+                    <p>
+                        Namun, di balik kerasnya bebatuan, Gunung Sembung menyimpan pesona alam yang luar biasa. Masyarakat dan pemerintah desa kemudian menyadari bahwa lanskap alam <em>(landscape view)</em> tebing-tebing batu yang menjulang serta pemandangan dari ketinggian memiliki nilai jual pariwisata yang sangat tinggi. Bekas-bekas area tambang pun mulai ditata ulang agar lebih aman dan estetis.
+                    </p>
 
-                        <p>
-                            Seiring berjalannya waktu, Desa
-                            {{ $profil->nama_desa }} mengalami berbagai perkembangan,
-                            baik dari sisi pembangunan infrastruktur, pelayanan
-                            pemerintahan, maupun pemberdayaan masyarakat.
-                            Pemerintah desa terus berupaya meningkatkan kualitas
-                            pelayanan publik melalui tata kelola pemerintahan
-                            yang transparan, akuntabel, dan berbasis teknologi.
-                        </p>
-
-                        <p>
-                            Nilai kebersamaan, kekeluargaan, serta partisipasi
-                            aktif masyarakat menjadi modal utama dalam setiap
-                            proses pembangunan desa. Berbagai potensi lokal,
-                            mulai dari sektor pertanian, UMKM, hingga kegiatan
-                            sosial kemasyarakatan, terus dikembangkan sebagai
-                            upaya meningkatkan kesejahteraan masyarakat secara
-                            berkelanjutan.
-                        </p>
-
-                        <p>
-                            Hingga saat ini, Desa {{ $profil->nama_desa }}
-                            terus berkomitmen menjadi desa yang maju,
-                            mandiri, dan sejahtera dengan tetap menjaga
-                            nilai-nilai budaya, kearifan lokal, serta
-                            semangat gotong royong yang menjadi identitas
-                            masyarakat desa.
-                        </p>
-
-                    </div>
+                    <p>
+                        Hingga akhirnya, arah pengembangan desa secara resmi dialihkan dari sektor pertambangan menjadi sektor pariwisata. Kini, Desa {{ $profil->nama_desa }} telah bertransformasi menjadi sebuah <strong>Desa Wisata</strong> yang sangat ramai dikunjungi oleh wisatawan dari berbagai daerah. Pemandangan alam eksotis yang dahulu merupakan sisa galian batu kini menjadi daya tarik utama, membawa kesejahteraan baru bagi masyarakat tanpa merusak keseimbangan alam.
+                    </p>
 
                 </div>
 
@@ -100,7 +64,7 @@
 
     </section>
 
-    {{-- Timeline --}}
+    {{-- Timeline (Disesuaikan dengan Sejarah) --}}
     <section class="py-16 bg-white">
 
         <div class="max-w-5xl mx-auto px-6">
@@ -108,7 +72,7 @@
             <div class="text-center mb-12">
 
                 <h2 class="text-3xl font-bold text-[#1e6306]">
-                    Perkembangan Desa
+                    Tonggak Perubahan Desa
                 </h2>
 
                 <div class="w-24 h-1 bg-[#fac81b] mx-auto mt-4 rounded-full"></div>
@@ -119,34 +83,28 @@
 
                 <div class="border-l-4 border-[#1e6306] pl-6">
                     <h3 class="text-xl font-semibold text-[#1e6306]">
-                        Awal Perkembangan
+                        Masa Pertambangan
                     </h3>
                     <p class="text-[#313131] mt-2 leading-7">
-                        Masyarakat mulai mengembangkan wilayah dengan
-                        mengandalkan sektor pertanian sebagai mata pencaharian utama.
+                        Kawasan Gunung Sembung menjadi area tambang batu aktif. Sebagian besar warga berprofesi sebagai pemecah dan penambang batu karena sulitnya bercocok tanam.
                     </p>
                 </div>
 
                 <div class="border-l-4 border-[#fac81b] pl-6">
                     <h3 class="text-xl font-semibold text-[#1e6306]">
-                        Pembangunan Desa
+                        Masa Transisi
                     </h3>
                     <p class="text-[#313131] mt-2 leading-7">
-                        Infrastruktur, pelayanan pemerintahan,
-                        dan fasilitas umum terus ditingkatkan
-                        untuk mendukung kebutuhan masyarakat.
+                        Menyadari keterbatasan lahan tani dan potensi kerusakan lingkungan akibat tambang, masyarakat dan aparat desa mulai melihat potensi keindahan lanskap batu.
                     </p>
                 </div>
 
                 <div class="border-l-4 border-[#1e6306] pl-6">
                     <h3 class="text-xl font-semibold text-[#1e6306]">
-                        Transformasi Digital
+                        Era Desa Wisata
                     </h3>
                     <p class="text-[#313131] mt-2 leading-7">
-                        Pemerintah Desa mulai memanfaatkan teknologi
-                        informasi melalui website desa sebagai media
-                        pelayanan publik, penyebaran informasi,
-                        dan transparansi pemerintahan.
+                        Bekas area tambang disulap menjadi destinasi wisata alam. Keindahan <em>landscape view</em> pegunungan batu menjadikan desa ini ramai dikunjungi wisatawan dan meningkatkan ekonomi lokal.
                     </p>
                 </div>
 

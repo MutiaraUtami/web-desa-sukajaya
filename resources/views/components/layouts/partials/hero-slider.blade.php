@@ -1,4 +1,4 @@
-<section class="relative min-h-[560px] md:h-[600px] overflow-hidden bg-zinc-900 text-white flex flex-col justify-between">
+<section class="relative min-h-[400px] md:h-[600px] overflow-hidden bg-zinc-900 text-white flex flex-col justify-between">
     
     <div class="absolute inset-0 z-0">
         <div class="slide-item absolute inset-0 opacity-100 transition-opacity duration-1000 ease-in-out">
@@ -38,7 +38,7 @@
                 Digitalisasi Desa
             </span>
             
-            <h1 class="font-extrabold text-4xl md:text-6xl text-white leading-[1.15] drop-shadow-md mb-6">
+            <h1 class="font-extrabold text-5xl md:text-6xl text-white leading-[1.15] drop-shadow-md mb-6">
                 Selamat Datang <br>di Website<br>
                 <span class="text-[#fac81b]">Desa Sukajaya</span>
             </h1>
@@ -48,13 +48,12 @@
             </p>
         </div>
 
-        <div class="md:col-span-5 h-full flex items-end justify-center md:justify-end relative min-h-[300px] md:min-h-auto">
+        <div class="hidden md:flex md:col-span-5 h-full items-end justify-end relative">
             <img src="{{ asset('images/kepala-desa.png') }}" 
                 alt="Kepala Desa Sukajaya" 
-                class="h-[280px] sm:h-[350px] md:h-[480px] lg:h-[540px] object-contain object-cover z-20 drop-shadow-[0_4px_15px_rgba(0,0,0,0.3)] select-none">
+                class="h-[480px] lg:h-[540px] object-contain z-20 drop-shadow-[0_4px_15px_rgba(0,0,0,0.3)] select-none">
 
-                
-            <div class="absolute bottom-9 left-1/2 -translate-x-1/2 md:left-auto md:right-0 md:translate-x-0 z-30 bg-white border-t-4 border-[#fac81b] px-5 py-3 rounded-md shadow-2xl flex flex-col min-w-[200px] text-center md:text-left">
+            <div class="absolute bottom-9 right-0 z-30 bg-white border-t-4 border-[#fac81b] px-5 py-3 rounded-md shadow-2xl flex flex-col min-w-[200px] text-left">
                 <span class="text-xs uppercase tracking-wider text-[#1e6306] font-extrabold">
                     Kepala Desa
                 </span>
@@ -65,7 +64,7 @@
         </div>
     </div>
 
-    <div class="relative z-50 bg-[#0e2206] w-full border-t border-white/5">
+    <div class="relative z-20 bg-[#0e2206] w-full border-t border-white/5">
         <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-stretch justify-between">
             
             <div class="flex-grow flex items-center bg-[#0e2206] py-3 px-6 overflow-hidden min-h-[50px]">

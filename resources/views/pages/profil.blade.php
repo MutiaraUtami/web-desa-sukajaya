@@ -113,20 +113,53 @@
             </div>
         </section>
 
-        {{-- Peta --}}
-        @if ($profil->peta_embed)
-            <section>
-                <h2 class="text-3xl font-bold text-[#1e6306] mb-6 text-center">Lokasi Kantor Desa</h2>
-                <div class="overflow-hidden rounded-2xl shadow-lg aspect-video border-2 border-[#1e6306]/20">
-                    <iframe
-                        src="{{ $profil->peta_embed }}"
-                        class="w-full h-full"
-                        loading="lazy"
-                        allowfullscreen>
+{{-- Lokasi Kantor Desa (Desain Sesuai Mockup) --}}
+        <section class="max-w-6xl mx-auto px-4 pb-16">
+            <h2 class="text-3xl font-bold text-[#1e6306] border-b-4 border-[#1e6306] pb-2 inline-block mb-8">
+                Lokasi Kantor Desa
+            </h2>
+            
+            <div class="bg-white rounded-3xl shadow-xl border border-zinc-100 overflow-hidden flex flex-col lg:flex-row">
+                
+                <!-- Bagian Kiri: Gambar & Alamat -->
+                <div class="w-full lg:w-5/12 flex flex-col">
+                    <!-- Foto Kantor -->
+                    <div class="h-64 lg:h-[300px] relative">
+                        {{-- Ganti 'slider-1.jpeg' dengan gambar kantor desa Anda --}}
+                        <img src="{{ asset('images/slider-1.jpeg') }}" 
+                             alt="Kantor Desa {{ $profil->nama_desa ?? 'Sukajaya' }}" 
+                             class="w-full h-full object-cover">
+                    </div>
+                    
+                    <!-- Detail Alamat -->
+                    <div class="bg-zinc-50 p-6 lg:p-8 flex items-start gap-4 flex-1">
+                        <!-- Ikon Pin Kuning -->
+                        <div class="w-12 h-12 rounded-full bg-[#fac81b] flex items-center justify-center text-xl shrink-0 shadow-sm">
+                            📍
+                        </div>
+                        <!-- Teks -->
+                        <div>
+                            <h3 class="text-xl font-bold text-[#1e6306] mb-2">Alamat Kantor</h3>
+                            <p class="text-[#313131] leading-relaxed text-sm md:text-base">
+                                Jalan Raya Citapen, Kecamatan Sukatani, Kabupaten Purwakarta, Jawa Barat, 41167.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bagian Kanan: Peta (Maps) Langsung Titik Kantor Desa -->
+                <div class="w-full lg:w-7/12 h-80 lg:h-auto min-h-[450px] relative bg-zinc-200">
+                    <iframe 
+                        src="https://www.google.com/maps?q=Kantor+Desa+Sukajaya,+Sukatani,+Purwakarta&output=embed" 
+                        class="absolute inset-0 w-full h-full border-0" 
+                        allowfullscreen="" 
+                        loading="lazy" 
+                        referrerpolicy="no-referrer-when-downgrade">
                     </iframe>
                 </div>
-            </section>
-        @endif
+
+            </div>
+        </section>
 
     </div>
 </x-layouts.app>

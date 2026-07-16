@@ -124,7 +124,6 @@
 </div>
 
 <style>
-/* Menyembunyikan scrollbar agar kalender tetap rapi saat ada banyak agenda di satu hari */
 .no-scrollbar::-webkit-scrollbar {
     display: none;
 }

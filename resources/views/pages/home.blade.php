@@ -70,85 +70,73 @@
     </section>
 
     <!-- 3. SECTION DAFTAR UMKM (Menggunakan Palet Hijau Utama & Aksen Kuning) -->
-    <div class="mb-12">
-    <!-- Header Section -->
-    <div class="flex justify-between items-end mb-6 border-b pb-2">
-        <div>
-            <h2 class="text-3xl font-bold text-gray-800 border-b-4 border-green-700 inline-block pb-1">UMKM Unggulan Desa</h2>
-        </div>
-        <!-- Pastikan href ini mengarah ke route halaman daftar UMKM milik Muti -->
-        <a href="/umkm" class="text-green-700 font-bold hover:underline mb-1">Lihat Semua &rarr;</a>
-    </div>
-
-    <!-- Grid UMKM -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {{-- Trik: Langsung panggil 4 data UMKM terbaru dari database --}}
-        @foreach (\App\Models\Umkm::latest()->take(4)->get() as $item)
-            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col hover:shadow-md transition-shadow">
-                
-                <!-- Area Gambar -->
-                <div class="h-48 bg-gray-50 relative flex items-center justify-center">
-                    @if($item->foto)
-                        <img src="{{ asset('storage/' . $item->foto) }}" alt="{{ $item->nama_usaha }}" class="w-full h-full object-cover">
-                    @else
-                        <!-- Tampil emoji warung kalau belum ada foto -->
-                        <div class="text-5xl">🏪</div>
-                    @endif
-                </div>
-
-                <!-- Area Konten -->
-                <div class="p-6 flex-1 flex flex-col">
-                    <div class="mb-3">
-                        <!-- Nampilin Kategori. Kalau kosong, default-nya tulisan 'Unggulan' -->
-                        <span class="bg-yellow-400 text-yellow-900 text-xs font-extrabold px-3 py-1 rounded-full">
-                            {{ $item->kategori ?? 'Unggulan' }}
-                        </span>
-                    </div>
-                    
-                    <h3 class="text-xl font-bold text-gray-900 mb-2">{{ $item->nama_usaha }}</h3>
-                    
-                    <p class="text-sm text-gray-500 mb-6 flex-1 line-clamp-2">
-                        {{ $item->deskripsi ?? 'Produk lokal berkualitas tinggi buatan warga asli Desa Sukajaya.' }}
-                    </p>
-                    
-                    <!-- Area Footer/Kontak -->
-                    <div class="border-t border-gray-100 pt-4 mt-auto">
-                        <p class="text-sm text-gray-400">
-                            @if($item->kontak)
-                                📞 <span class="font-medium text-gray-600">{{ $item->kontak }}</span> ({{ $item->pemilik }})
-                            @else
-                                Hubungi kontak desa untuk informasi lengkap.
-                            @endif
-                        </p>
-                    </div>
-                </div>
-                
-            </div>
-        @endforeach
-    </div>
-</div>
-
-    <!-- 4. SECTION PETA DESA -->
     <section class="max-w-6xl mx-auto px-4 pb-16">
-    <h2 class="text-2xl font-bold mb-6 text-[#313131] border-b-4 border-[#1e6306] pb-2 inline-block">Peta Fasilitas Wilayah Desa</h2>
-    
-    <div class="w-full h-[500px] rounded-3xl overflow-hidden shadow-md border border-zinc-200 bg-zinc-100 relative group">
-        
-        <iframe 
-            src="https://www.google.com/maps/d/u/0/embed?mid=1-cOvqsP7cQ7sckZOyhQNKpQ2ybqMTSk&ehbc=2E312F" 
-            class="w-full h-full border-0" 
-            allowfullscreen="" 
-            loading="lazy" 
-            referrerpolicy="no-referrer-when-downgrade">
-        </iframe>
-        
-        <div class="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-lg shadow-sm border border-gray-100 text-xs font-medium text-gray-700 pointer-events-none">
-            <span class="inline-block w-3 h-3 bg-blue-500 rounded-full mr-1"></span> Sekolah &nbsp;
-            <span class="inline-block w-3 h-3 bg-green-500 rounded-full mr-1"></span> Rumah Ibadah &nbsp;
-            <span class="inline-block w-3 h-3 bg-yellow-500 rounded-full mr-1"></span> Industri
+        <div class="flex justify-between items-end mb-6">
+            <h2 class="text-2xl font-bold text-[#313131] border-b-4 border-[#1e6306] pb-2 inline-block">UMKM Unggulan Desa</h2>
+            <a href="/umkm" class="text-[#1e6306] font-bold hover:text-[#fac81b] transition-colors mb-2 text-sm md:text-base">
+                Lihat Semua &rarr;
+            </a>
         </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {{-- Mengambil 4 data UMKM terbaru --}}
+            @foreach (\App\Models\Umkm::latest()->take(4)->get() as $item)
+                <div class="group bg-white rounded-3xl shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-zinc-100 overflow-hidden flex flex-col">
+                    
+                    <div class="h-48 bg-zinc-100 relative flex items-center justify-center overflow-hidden">
+                        @if($item->foto)
+                            <img src="{{ asset('storage/' . $item->foto) }}" alt="{{ $item->nama_usaha }}" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        @else
+                            <div class="text-5xl z-10 group-hover:scale-110 transition-transform duration-500">🏪</div>
+                        @endif
+                        
+                        <div class="absolute top-4 right-4 bg-[#fac81b] text-[#0e2206] text-[10px] font-extrabold px-3 py-1.5 rounded-full uppercase tracking-wider shadow-sm z-20">
+                            {{ $item->kategori ?? 'Unggulan' }}
+                        </div>
+                    </div>
+
+                    <div class="p-6 flex-1 flex flex-col relative z-10 bg-white">
+                        <h3 class="text-lg font-bold text-zinc-800 mb-2 group-hover:text-[#1e6306] transition-colors">
+                            {{ $item->nama_usaha }}
+                        </h3>
+                        
+                        <p class="text-sm text-zinc-500 mb-6 flex-1 line-clamp-2 leading-relaxed">
+                            {{ $item->deskripsi ?? 'Produk lokal berkualitas tinggi buatan warga asli Desa Sukajaya.' }}
+                        </p>
+                        
+                        <div class="border-t border-zinc-100 pt-4 mt-auto">
+                            <p class="text-xs text-zinc-500 flex items-center gap-2">
+                                @if($item->kontak)
+                                    <span class="w-6 h-6 rounded-full bg-[#1e6306]/10 flex items-center justify-center text-[#1e6306]">📞</span>
+                                    <span class="truncate"><span class="font-bold text-zinc-700">{{ $item->kontak }}</span> ({{ $item->pemilik }})</span>
+                                @else
+                                    <span class="w-6 h-6 rounded-full bg-zinc-100 flex items-center justify-center text-zinc-400">ℹ️</span>
+                                    <span>Hubungi desa untuk info.</span>
+                                @endif
+                            </p>
+                        </div>
+                    </div>
+                    
+                </div>
+            @endforeach
+        </div>
+    </section>
+    
+<!-- 4. SECTION PETA DESA -->
+    <section class="max-w-6xl mx-auto px-4 pb-16">
+        <h2 class="text-2xl font-bold mb-6 text-[#313131] border-b-4 border-[#1e6306] pb-2 inline-block">Peta Wilayah Desa</h2>
         
-    </div>
-</section>
+        <div class="w-full h-[500px] rounded-3xl overflow-hidden shadow-md border border-zinc-200 bg-zinc-100 relative group">
+            
+            <iframe 
+                src="https://www.google.com/maps?q=Desa+Sukajaya,+Sukatani,+Purwakarta&output=embed" 
+                class="w-full h-full border-0" 
+                allowfullscreen="" 
+                loading="lazy" 
+                referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+            
+        </div>
+    </section>
 
 </x-layouts.app>

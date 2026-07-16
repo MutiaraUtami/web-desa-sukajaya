@@ -13,7 +13,8 @@ class StatistikManager extends Component
     use WithPagination;
 
     public $statistik_id;
-    public $tahun, $dusun_rw, $jumlah_kk, $laki_laki, $perempuan;
+    // Menambahkan total_jiwa sebagai public property agar bisa diakses jika diperlukan
+    public $tahun, $dusun_rw, $jumlah_kk, $laki_laki, $perempuan, $total_jiwa;
     public $usia_0_14, $usia_15_64, $usia_65_keatas, $keterangan;
     
     public $showModal = false;
@@ -41,14 +42,12 @@ class StatistikManager extends Component
         return view('livewire.admin.statistik-manager', compact('data'));
     }
 
-    // Fungsi dipanggil saat tombol "+ Tambah Data" diklik
     public function create()
     {
         $this->resetFields();
         $this->showModal = true;
     }
 
-    // Fungsi dipanggil saat tombol "Edit" diklik
     public function edit($id)
     {
         $this->resetFields();
@@ -60,6 +59,7 @@ class StatistikManager extends Component
         $this->jumlah_kk = $item->jumlah_kk;
         $this->laki_laki = $item->laki_laki;
         $this->perempuan = $item->perempuan;
+        $this->total_jiwa = $item->total_jiwa;
         $this->usia_0_14 = $item->usia_0_14;
         $this->usia_15_64 = $item->usia_15_64;
         $this->usia_65_keatas = $item->usia_65_keatas;
@@ -68,13 +68,12 @@ class StatistikManager extends Component
         $this->showModal = true;
     }
 
-    // Fungsi untuk menyimpan data (Tambah baru / Update)
     public function save()
     {
         $this->validate();
 
-        // Hitung otomatis total jiwa biar admin nggak repot
-        $total_jiwa = (int)$this->laki_laki + (int)$this->perempuan;
+        // Hitung otomatis total jiwa
+        $this->total_jiwa = (int)$this->laki_laki + (int)$this->perempuan;
 
         StatistikPenduduk::updateOrCreate(
             ['id' => $this->statistik_id],
@@ -84,7 +83,7 @@ class StatistikManager extends Component
                 'jumlah_kk' => $this->jumlah_kk,
                 'laki_laki' => $this->laki_laki,
                 'perempuan' => $this->perempuan,
-                'total_jiwa' => $total_jiwa, // Hasil hitungan otomatis
+                'total_jiwa' => $this->total_jiwa, 
                 'usia_0_14' => $this->usia_0_14 ?? 0,
                 'usia_15_64' => $this->usia_15_64 ?? 0,
                 'usia_65_keatas' => $this->usia_65_keatas ?? 0,
@@ -97,29 +96,27 @@ class StatistikManager extends Component
         $this->closeModal();
     }
 
-    // Fungsi dipanggil saat tombol "Hapus" diklik
     public function delete($id)
     {
         StatistikPenduduk::findOrFail($id)->delete();
         session()->flash('message', 'Data statistik berhasil dihapus!');
     }
 
-    // Fungsi untuk menutup modal
     public function closeModal()
     {
         $this->showModal = false;
         $this->resetFields();
     }
 
-    // Membersihkan variabel form dan error
     public function resetFields()
     {
         $this->statistik_id = null;
-        $this->tahun = date('Y'); // Langsung diset otomatis ke tahun sekarang
+        $this->tahun = date('Y'); 
         $this->dusun_rw = '';
         $this->jumlah_kk = null;
         $this->laki_laki = null;
         $this->perempuan = null;
+        $this->total_jiwa = null;
         $this->usia_0_14 = null;
         $this->usia_15_64 = null;
         $this->usia_65_keatas = null;
