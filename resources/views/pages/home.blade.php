@@ -70,60 +70,63 @@
     </section>
 
     <!-- 3. SECTION DAFTAR UMKM (Menggunakan Palet Hijau Utama & Aksen Kuning) -->
-    <section class="max-w-6xl mx-auto px-4 pb-16">
-        <div class="flex justify-between items-center mb-6">
-            <h2 class="text-2xl font-bold text-[#313131] border-b-4 border-[#1e6306] pb-2 inline-block">UMKM Unggulan Desa</h2>
-            <a href="{{ route('umkm') }}" class="text-sm font-bold text-[#1e6306] hover:text-[#0e2206] hover:underline">Lihat Semua →</a>
+    <div class="mb-12">
+    <!-- Header Section -->
+    <div class="flex justify-between items-end mb-6 border-b pb-2">
+        <div>
+            <h2 class="text-3xl font-bold text-gray-800 border-b-4 border-green-700 inline-block pb-1">UMKM Unggulan Desa</h2>
         </div>
-        
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            @forelse ($daftarUmkm ?? [] as $umkm)
-                <div class="bg-white rounded-3xl shadow-sm border border-zinc-100 overflow-hidden flex flex-col hover:shadow-xl transition-all duration-300">
-                    @if($umkm->foto)
-                        <img src="{{ asset('storage/' . $umkm->foto) }}" class="w-full h-40 object-cover" alt="{{ $umkm->nama_usaha }}">
+        <!-- Pastikan href ini mengarah ke route halaman daftar UMKM milik Muti -->
+        <a href="/umkm" class="text-green-700 font-bold hover:underline mb-1">Lihat Semua &rarr;</a>
+    </div>
+
+    <!-- Grid UMKM -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {{-- Trik: Langsung panggil 4 data UMKM terbaru dari database --}}
+        @foreach (\App\Models\Umkm::latest()->take(4)->get() as $item)
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col hover:shadow-md transition-shadow">
+                
+                <!-- Area Gambar -->
+                <div class="h-48 bg-gray-50 relative flex items-center justify-center">
+                    @if($item->foto)
+                        <img src="{{ asset('storage/' . $item->foto) }}" alt="{{ $item->nama_usaha }}" class="w-full h-full object-cover">
                     @else
-                        <div class="w-full h-40 bg-[#0e2206]/5 flex items-center justify-center text-[#1e6306] font-bold text-xl">
-                            🛍️
-                        </div>
+                        <!-- Tampil emoji warung kalau belum ada foto -->
+                        <div class="text-5xl">🏪</div>
                     @endif
-                    <div class="p-5 flex-1 flex flex-col justify-between">
-                        <div>
-                            <span class="inline-block px-2.5 py-0.5 bg-[#fac81b]/20 text-[#0e2206] text-[10px] font-bold rounded-full mb-2">
-                                {{ $umkm->kategori ?? 'Produk Lokal' }}
-                            </span>
-                            <h3 class="font-bold text-[#313131] text-sm line-clamp-1">{{ $umkm->nama_usaha }}</h3>
-                            <p class="text-xs text-zinc-500 line-clamp-2 mt-1">{{ $umkm->deskripsi }}</p>
-                        </div>
-                        <div class="mt-4 pt-3 border-t border-zinc-100 flex items-center justify-between text-xs">
-                            <span class="font-medium text-[#313131]">👤 {{ $umkm->nama_pemilik }}</span>
-                            @if($umkm->whatsapp)
-                                <a href="https://wa.me/{{ $umkm->whatsapp }}" target="_blank" class="px-3 py-1 bg-[#1e6306] hover:bg-[#0e2206] text-white rounded-xl font-semibold text-[11px] transition-colors shadow-sm shadow-[#1e6306]/30">
-                                    Hubungi
-                                </a>
+                </div>
+
+                <!-- Area Konten -->
+                <div class="p-6 flex-1 flex flex-col">
+                    <div class="mb-3">
+                        <!-- Nampilin Kategori. Kalau kosong, default-nya tulisan 'Unggulan' -->
+                        <span class="bg-yellow-400 text-yellow-900 text-xs font-extrabold px-3 py-1 rounded-full">
+                            {{ $item->kategori ?? 'Unggulan' }}
+                        </span>
+                    </div>
+                    
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">{{ $item->nama_usaha }}</h3>
+                    
+                    <p class="text-sm text-gray-500 mb-6 flex-1 line-clamp-2">
+                        {{ $item->deskripsi ?? 'Produk lokal berkualitas tinggi buatan warga asli Desa Sukajaya.' }}
+                    </p>
+                    
+                    <!-- Area Footer/Kontak -->
+                    <div class="border-t border-gray-100 pt-4 mt-auto">
+                        <p class="text-sm text-gray-400">
+                            @if($item->kontak)
+                                📞 <span class="font-medium text-gray-600">{{ $item->kontak }}</span> ({{ $item->pemilik }})
+                            @else
+                                Hubungi kontak desa untuk informasi lengkap.
                             @endif
-                        </div>
+                        </p>
                     </div>
                 </div>
-            @empty
-                <!-- Data Dummy Jika Belum Ada Data Database -->
-                @foreach(range(1, 4) as $index)
-                <div class="bg-white rounded-3xl shadow-sm border border-zinc-100 overflow-hidden flex flex-col hover:shadow-lg transition">
-                    <div class="w-full h-40 bg-zinc-100 flex items-center justify-center text-2xl">🏪</div>
-                    <div class="p-5 flex-1 flex flex-col justify-between">
-                        <div>
-                            <span class="inline-block px-2.5 py-0.5 bg-[#fac81b] text-[#0e2206] text-[10px] font-bold rounded-full mb-2">Unggulan</span>
-                            <h3 class="font-bold text-[#313131] text-sm">Produk UMKM Sukajaya {{ $index }}</h3>
-                            <p class="text-xs text-zinc-500 mt-1">Produk lokal berkualitas tinggi buatan warga asli Desa Sukajaya.</p>
-                        </div>
-                        <div class="mt-4 pt-3 border-t border-zinc-100 text-xs text-zinc-400">
-                            Hubungi kontak desa untuk informasi lengkap.
-                        </div>
-                    </div>
-                </div>
-                @endforeach
-            @endforelse
-        </div>
-    </section>
+                
+            </div>
+        @endforeach
+    </div>
+</div>
 
     <!-- 4. SECTION PETA DESA -->
     <section class="max-w-6xl mx-auto px-4 pb-16">

@@ -7,23 +7,23 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <div>
                 <p class="text-sm text-gray-500 font-medium mb-1">Jumlah Penduduk</p>
-                <p class="text-lg font-bold text-gray-900">4.749 Jiwa</p>
+                <p class="text-lg font-bold text-gray-900">{{ number_format($jumlahPenduduk, 0, ',', '.') }} Jiwa</p>
             </div>
             <div>
                 <p class="text-sm text-gray-500 font-medium mb-1">Mata Pencaharian Utama</p>
-                <p class="text-base text-gray-800">Petani, Buruh Tani, Buruh Pabrik</p>
+                <p class="text-base text-gray-800">{{ $infoDasar->mata_pencaharian ?? 'Belum ada data' }}</p>
             </div>
             <div>
                 <p class="text-sm text-gray-500 font-medium mb-1">Perekonomian</p>
-                <p class="text-base text-gray-800">Pabrik, Sawah, Kebun</p>
+                <p class="text-base text-gray-800">{{ $infoDasar->perekonomian ?? 'Belum ada data' }}</p>
             </div>
             <div>
                 <p class="text-sm text-gray-500 font-medium mb-1">Sarana Pendidikan</p>
-                <p class="text-base text-gray-800 uppercase">PAUD, TK, SD, SMP</p>
+                <p class="text-base text-gray-800 uppercase">{{ $infoDasar->sarana_pendidikan ?? 'Belum ada data' }}</p>
             </div>
             <div>
                 <p class="text-sm text-gray-500 font-medium mb-1">Tempat Ibadah</p>
-                <p class="text-base text-gray-800">Masjid</p>
+                <p class="text-base text-gray-800">{{ $infoDasar->tempat_ibadah ?? 'Belum ada data' }}</p>
             </div>
         </div>
     </div>

@@ -39,6 +39,7 @@
                         ['route' => 'admin.dashboard', 'label' => 'Dashboard'],
                         ['route' => 'admin.profil', 'label' => 'Profil Desa'],
                         ['route' => 'admin.statistik', 'label' => 'Statistik Penduduk'],
+                        ['route' => 'admin.informasi-demografi', 'label' => 'Info Demografi'], /* <--- BARIS BARU DITAMBAHKAN DI SINI */
                         ['route' => 'admin.organisasi', 'label' => 'Struktur Organisasi'],
                         ['route' => 'admin.agenda', 'label' => 'Agenda'],
                         ['route' => 'admin.berita', 'label' => 'Berita'],

@@ -18,6 +18,7 @@ use App\Livewire\Frontend\DemografisView;
 use App\Livewire\Frontend\StatistikView;
 use App\Livewire\Frontend\UmkmList;
 use Illuminate\Support\Facades\Route;
+use App\Livewire\Admin\InformasiDemografiManager;
 
 /*
 |--------------------------------------------------------------------------
@@ -65,4 +66,5 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/berita', BeritaManager::class)->name('berita');
     Route::get('/umkm', UmkmManager::class)->name('umkm');
     Route::get('/apbdes', ApbdesManager::class)->name('apbdes');
+    Route::get('/informasi-demografi', InformasiDemografiManager::class)->name('informasi-demografi');
 });
