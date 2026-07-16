@@ -49,8 +49,16 @@
                 @endphp
 
                 @foreach($menu as $item)
+                    @php
+                        $isActive = request()->routeIs($item['route']);
+                    @endphp
+                    
                     <a href="{{ route($item['route']) }}" 
-                       class="block py-2.5 px-4 rounded-lg transition-all duration-200 {{ request()->routeIs($item['route']) ? 'active-link' : 'hover:bg-[#1e6306]/50 hover:pl-6' }}">
+                    class="block py-2.5 px-4 rounded-lg transition-all duration-200 border-l-4 
+                    {{ $isActive 
+                        ? 'bg-[#1e6306] border-[#fac81b]' 
+                        : 'border-transparent hover:bg-[#1e6306]/50 hover:pl-6 hover:border-transparent' 
+                    }}">
                         {{ $item['label'] }}
                     </a>
                 @endforeach
