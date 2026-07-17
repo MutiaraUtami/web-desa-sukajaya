@@ -87,7 +87,7 @@
                     </div>
                 </div>
 
-                {{-- Dropdown 3 --}}
+               {{-- Dropdown 3 --}}
                 <div class="relative group nav-item w-full md:w-auto border-b md:border-none border-white/10 pb-2 md:pb-0">
                     <button onclick="if(window.innerWidth < 768) { this.nextElementSibling.classList.toggle('hidden'); }" class="hover:text-[#fac81b] py-2 w-full md:w-auto flex justify-between items-center gap-1 cursor-pointer focus:outline-none transition duration-200">
                         Informasi 
@@ -99,7 +99,7 @@
                         <a href="{{ route('agenda') }}" class="block px-6 md:px-4 py-2 md:hover:bg-green-50 hover:text-[#fac81b] md:hover:text-[#1e6306] font-medium transition">Agenda</a>
                         <a href="{{ route('berita') }}" class="block px-6 md:px-4 py-2 md:hover:bg-green-50 hover:text-[#fac81b] md:hover:text-[#1e6306] font-medium transition">Berita</a>
                         <a href="{{ route('apbdes') }}" class="block px-6 md:px-4 py-2 md:hover:bg-green-50 hover:text-[#fac81b] md:hover:text-[#1e6306] font-medium transition">APBDes</a>
-                        <a href="#" class="block px-6 md:px-4 py-2 md:hover:bg-green-50 hover:text-[#fac81b] md:hover:text-[#1e6306] font-medium transition">Galeri</a>
+                        <a href="{{ route('gallery.index') }}" class="block px-6 md:px-4 py-2 md:hover:bg-green-50 hover:text-[#fac81b] md:hover:text-[#1e6306] font-medium transition">Galeri</a>
                     </div>
                 </div>
 
