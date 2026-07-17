@@ -3,86 +3,130 @@
 namespace App\Livewire\Admin;
 
 use Livewire\Component;
-use Livewire\WithPagination;
 use Livewire\WithFileUploads;
-use App\Models\LembagaDesa;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
-use Livewire\Attributes\Layout;
+// Sesuaikan nama model di bawah dengan yang abang punya:
+use App\Models\OrganizationChart;
+use App\Models\AparaturDesa;
 
-#[Layout('components.layouts.admin')]
 class OrganisasiManager extends Component
 {
-    use WithPagination, WithFileUploads;
+    use WithFileUploads;
 
-    public $lembaga_id, $nama_lembaga, $deskripsi, $file_pdf, $old_pdf;
-    public $isModalOpen = false;
+    // == STATE UNTUK BAGAN ==
+    public $file_bagan;
+    public $bagan_aktif; // Untuk nampilin bagan yang udah ada
+
+    // == STATE UNTUK APARATUR ==
+    public $aparatur_id, $nama, $role, $foto, $foto_lama;
+    public $isModalAparaturOpen = false;
+
+    public function mount()
+    {
+        // Ambil data bagan pertama saat halaman dimuat
+        $bagan = OrganizationChart::first();
+        if ($bagan) {
+           $this->bagan_aktif = $bagan->gambar; // Sesuaikan nama kolom di database
+        }
+    }
 
     public function render()
     {
-        $organisasi = LembagaDesa::orderBy('created_at', 'desc')->paginate(10);
-        return view('livewire.admin.organisasi-manager', compact('organisasi'));
+        // Ambil data aparatur
+        $aparatur = AparaturDesa::orderBy('created_at', 'desc')->get();
+
+        return view('livewire.admin.organisasi-manager', [
+            'daftar_aparatur' => $aparatur
+        ])->layout('layouts.admin'); // Pastikan layout admin
     }
 
-    public function create()
-    {
-        $this->resetFields();
-        $this->isModalOpen = true;
-    }
-
-    public function resetFields()
-    {
-        $this->reset(['lembaga_id', 'nama_lembaga', 'deskripsi', 'file_pdf', 'old_pdf']);
-    }
-
-    public function store()
+    // --- CRUD 1: UPLOAD BAGAN ---
+    public function uploadBagan()
     {
         $this->validate([
-            'nama_lembaga' => 'required|string|max:255',
-            'deskripsi' => 'required|string',
-            // Validasi diubah agar menerima PDF dan Gambar
-            'file_pdf' => 'nullable|mimes:pdf,jpg,jpeg,png|max:5120', // Maks 5MB
+            'file_bagan' => 'required|image|max:2048', // Maks 2MB, harus gambar
         ]);
 
-        $filePath = $this->old_pdf;
+        $path = $this->file_bagan->store('struktur/bagan', 'public');
 
-        // Kalau ada file baru di-upload
-        if ($this->file_pdf) {
-            if ($this->old_pdf) {
-                Storage::disk('public')->delete($this->old_pdf); // Hapus file lama
+        // Hapus bagan lama dari storage jika ada
+        if ($this->bagan_aktif) {
+            Storage::disk('public')->delete($this->bagan_aktif);
+        }
+
+        // Simpan ke DB (Asumsi cuma butuh 1 baris data bagan)
+        $bagan = OrganizationChart::first();
+        if ($bagan) {
+          $bagan->update(['gambar' => $path]);
+        } else {
+            OrganizationChart::create(['gambar' => $path]);
+        }
+
+        $this->bagan_aktif = $path;
+        $this->file_bagan = null;
+        session()->flash('message_bagan', 'Bagan struktur berhasil diperbarui!');
+    }
+
+    // --- CRUD 2: KELOLA APARATUR ---
+    public function openModalAparatur($id = null)
+    {
+        $this->resetAparatur();
+        if ($id) {
+            $data = AparaturDesa::find($id);
+            $this->aparatur_id = $data->id;
+            $this->nama = $data->nama;
+            $this->role = $data->role;
+            $this->foto_lama = $data->foto;
+        }
+        $this->isModalAparaturOpen = true;
+    }
+
+    public function simpanAparatur()
+    {
+        $this->validate([
+            'nama' => 'required|string|max:255',
+            'role' => 'required|string|max:255',
+            'foto' => 'nullable|image|max:2048', // Foto opsional pas edit
+        ]);
+
+        $pathFoto = $this->foto_lama;
+        if ($this->foto) {
+            if ($this->foto_lama) {
+                Storage::disk('public')->delete($this->foto_lama);
             }
-            $filePath = $this->file_pdf->store('struktur-organisasi', 'public');
+            $pathFoto = $this->foto->store('struktur/aparatur', 'public');
         }
 
-        LembagaDesa::updateOrCreate(['id' => $this->lembaga_id], [
-            'nama_lembaga' => $this->nama_lembaga,
-            'slug' => Str::slug($this->nama_lembaga), // Otomatis bikin URL ramah SEO
-            'deskripsi' => $this->deskripsi,
-            'file_pdf' => $filePath, // Tetap disimpan di kolom ini
-        ]);
+        AparaturDesa::updateOrCreate(
+            ['id' => $this->aparatur_id],
+            [
+                'nama' => $this->nama,
+                'role' => $this->role,
+                'foto' => $pathFoto,
+            ]
+        );
 
-        session()->flash('message', $this->lembaga_id ? 'Lembaga diperbarui!' : 'Lembaga ditambahkan!');
-        $this->isModalOpen = false;
-        $this->resetFields();
+        $this->isModalAparaturOpen = false;
+        $this->resetAparatur();
+        session()->flash('message_aparatur', 'Data Aparatur berhasil disimpan!');
     }
 
-    public function edit($id)
+    public function hapusAparatur($id)
     {
-        $lembaga = LembagaDesa::findOrFail($id);
-        $this->lembaga_id = $id;
-        $this->nama_lembaga = $lembaga->nama_lembaga;
-        $this->deskripsi = $lembaga->deskripsi;
-        $this->old_pdf = $lembaga->file_pdf;
-        $this->isModalOpen = true;
-    }
-
-    public function delete($id)
-    {
-        $lembaga = LembagaDesa::findOrFail($id);
-        if ($lembaga->file_pdf) {
-            Storage::disk('public')->delete($lembaga->file_pdf);
+        $data = AparaturDesa::find($id);
+        if ($data->foto) {
+            Storage::disk('public')->delete($data->foto);
         }
-        $lembaga->delete();
-        session()->flash('message', 'Lembaga dihapus!');
+        $data->delete();
+        session()->flash('message_aparatur', 'Data Aparatur berhasil dihapus!');
+    }
+
+    public function resetAparatur()
+    {
+        $this->aparatur_id = null;
+        $this->nama = '';
+        $this->role = '';
+        $this->foto = null;
+        $this->foto_lama = null;
     }
 }
