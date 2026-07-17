@@ -47,7 +47,7 @@ class PageController extends Controller
     $aparatur = AparaturDesa::orderBy('created_at', 'asc')->get();
 
     // Kirim ke view (pastikan nama view-nya sesuai dengan yang abang punya)
-    return view('nama_folder_view.struktur-organisasi', compact('bagan', 'aparatur')); 
+    return view('pages.struktur-organisasi', compact('bagan', 'aparatur')); 
 }
 
     public function lembagaDesa()
