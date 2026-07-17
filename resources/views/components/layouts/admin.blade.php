@@ -39,8 +39,16 @@
                         ['route' => 'admin.dashboard', 'label' => 'Dashboard'],
                         ['route' => 'admin.profil', 'label' => 'Profil Desa'],
                         ['route' => 'admin.statistik', 'label' => 'Statistik Penduduk'],
+<<<<<<< Updated upstream
                         ['route' => 'admin.informasi-demografi', 'label' => 'Info Demografi'], /* <--- BARIS BARU DITAMBAHKAN DI SINI */
                         ['route' => 'admin.organisasi', 'label' => 'Struktur Organisasi'],
+=======
+                        ['route' => 'admin.informasi-demografi', 'label' => 'Info Demografi'],
+                        // Ini buat Struktur Pemerintahan (Kembalikan ke rute aslinya)
+                        ['route' => 'admin.organisasi', 'label' => 'Struktur Desa'], 
+                        // Ini menu BARU khusus buat BPD, PKK, dll
+                        ['route' => 'admin.lembaga', 'label' => 'Lembaga Desa'],
+>>>>>>> Stashed changes
                         ['route' => 'admin.agenda', 'label' => 'Agenda'],
                         ['route' => 'admin.berita', 'label' => 'Berita'],
                         ['route' => 'admin.umkm', 'label' => 'UMKM'],

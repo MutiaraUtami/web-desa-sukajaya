@@ -19,6 +19,7 @@ use App\Livewire\Frontend\StatistikView;
 use App\Livewire\Frontend\UmkmList;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Admin\InformasiDemografiManager;
+use App\Livewire\Admin\LembagaManager;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,6 +32,8 @@ Route::get('/visi-misi', [PageController::class, 'visiMisi'])->name('visi-misi')
 Route::get('/sejarah', [PageController::class, 'sejarah'])->name('sejarah');
 Route::get('/geografis', [PageController::class, 'geografis'])->name('geografis');
 Route::get('/struktur-organisasi', [PageController::class, 'strukturOrganisasi'])->name('struktur-organisasi');
+Route::get('/lembaga-desa', [PageController::class, 'lembagaDesa'])->name('lembaga-desa');
+Route::get('/lembaga-desa/{slug}', [PageController::class, 'lembagaDesaShow'])->name('lembaga-desa.show');
 Route::get('/demografis', DemografisView::class)->name('demografis');
 Route::get('/statistik', StatistikView::class)->name('statistik');
 Route::get('/agenda', AgendaList::class)->name('agenda');
@@ -62,6 +65,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/profil', ProfilManager::class)->name('profil');
     Route::get('/statistik', StatistikManager::class)->name('statistik');
     Route::get('/organisasi', OrganisasiManager::class)->name('organisasi');
+    Route::get('/lembaga', LembagaManager::class)->name('lembaga');    
     Route::get('/agenda', AgendaManager::class)->name('agenda');
     Route::get('/berita', BeritaManager::class)->name('berita');
     Route::get('/umkm', UmkmManager::class)->name('umkm');

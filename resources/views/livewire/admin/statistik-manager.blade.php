@@ -50,6 +50,7 @@
                 @endforelse
             </tbody>
         </table>
+        {{ $statistik->links() }}
     </div>
 
     <div class="mt-4">{{ $data->links() }}</div>

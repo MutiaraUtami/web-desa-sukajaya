@@ -3,182 +3,130 @@
 namespace App\Livewire\Admin;
 
 use Livewire\Component;
-use App\Models\Organisasi;
-use App\Models\OrganizationChart; // Tambahan Model Bagan
-use Livewire\WithPagination;
 use Livewire\WithFileUploads;
-use Livewire\Attributes\Layout;
 use Illuminate\Support\Facades\Storage;
+// Sesuaikan nama model di bawah dengan yang abang punya:
+use App\Models\OrganizationChart;
+use App\Models\AparaturDesa;
 
-#[Layout('components.layouts.admin')]
 class OrganisasiManager extends Component
 {
-    use WithPagination, WithFileUploads;
+    use WithFileUploads;
 
-    // --- VARIABEL UNTUK ANGGOTA ORGANISASI ---
-    public $nama, $jabatan, $urutan, $foto;
-    public $item_id, $fotoLama;
-    public $showModal = false;
+    // == STATE UNTUK BAGAN ==
+    public $file_bagan;
+    public $bagan_aktif; // Untuk nampilin bagan yang udah ada
 
-    // --- VARIABEL UNTUK BAGAN STRUKTUR ---
-    public $fileBagan, $baganLama, $baganId;
-    public $showModalBagan = false;
+    // == STATE UNTUK APARATUR ==
+    public $aparatur_id, $nama, $role, $foto, $foto_lama;
+    public $isModalAparaturOpen = false;
 
-    // Aturan validasi form anggota
-    protected function rules()
+    public function mount()
     {
-        return [
-            'nama' => 'required|string|max:255',
-            'jabatan' => 'required|string|max:255',
-            'urutan' => 'nullable|integer',
-            'foto' => 'nullable|image|max:2048', // Maksimal 2MB
-        ];
+        // Ambil data bagan pertama saat halaman dimuat
+        $bagan = OrganizationChart::first();
+        if ($bagan) {
+           $this->bagan_aktif = $bagan->gambar; // Sesuaikan nama kolom di database
+        }
     }
 
     public function render()
     {
-        // Ambil data anggota
-        $data = Organisasi::orderBy('urutan', 'asc')->paginate(9);
-        // Ambil data bagan (cukup ambil data pertama karena bagan cuma 1)
-        $bagan = OrganizationChart::first(); 
-        
-        return view('livewire.admin.organisasi-manager', compact('data', 'bagan'));
+        // Ambil data aparatur
+        $aparatur = AparaturDesa::orderBy('created_at', 'desc')->get();
+
+        return view('livewire.admin.organisasi-manager', [
+            'daftar_aparatur' => $aparatur
+        ])->layout('layouts.admin'); // Pastikan layout admin
     }
 
-    /* =======================================================
-       LOGIKA CRUD BAGAN STRUKTUR (BARU)
-       ======================================================= */
-    
-    public function openModalBagan()
-    {
-        $bagan = OrganizationChart::first();
-        if ($bagan) {
-            $this->baganId = $bagan->id;
-            // Disesuaikan dengan nama kolom Muti: 'gambar'
-            $this->baganLama = $bagan->gambar; 
-        } else {
-            $this->baganId = null;
-            $this->baganLama = null;
-        }
-        $this->fileBagan = null;
-        $this->resetErrorBag();
-        $this->showModalBagan = true;
-    }
-
-    public function closeModalBagan()
-    {
-        $this->showModalBagan = false;
-        $this->fileBagan = null;
-    }
-
-    public function saveBagan()
+    // --- CRUD 1: UPLOAD BAGAN ---
+    public function uploadBagan()
     {
         $this->validate([
-            // Support upload gambar dan PDF, maksimal 5MB
-            'fileBagan' => 'required|mimes:jpg,jpeg,png,pdf|max:5120', 
+            'file_bagan' => 'required|image|max:2048', // Maks 2MB, harus gambar
         ]);
 
-        $path = $this->baganLama;
+        $path = $this->file_bagan->store('struktur/bagan', 'public');
 
-        if ($this->fileBagan) {
-            if ($this->baganLama) {
-                Storage::disk('public')->delete($this->baganLama);
-            }
-            $path = $this->fileBagan->store('bagan-struktur', 'public');
+        // Hapus bagan lama dari storage jika ada
+        if ($this->bagan_aktif) {
+            Storage::disk('public')->delete($this->bagan_aktif);
         }
 
-        OrganizationChart::updateOrCreate(
-            ['id' => $this->baganId],
-            ['gambar' => $path] // Disesuaikan dengan nama kolom Muti
+        // Simpan ke DB (Asumsi cuma butuh 1 baris data bagan)
+        $bagan = OrganizationChart::first();
+        if ($bagan) {
+          $bagan->update(['gambar' => $path]);
+        } else {
+            OrganizationChart::create(['gambar' => $path]);
+        }
+
+        $this->bagan_aktif = $path;
+        $this->file_bagan = null;
+        session()->flash('message_bagan', 'Bagan struktur berhasil diperbarui!');
+    }
+
+    // --- CRUD 2: KELOLA APARATUR ---
+    public function openModalAparatur($id = null)
+    {
+        $this->resetAparatur();
+        if ($id) {
+            $data = AparaturDesa::find($id);
+            $this->aparatur_id = $data->id;
+            $this->nama = $data->nama;
+            $this->role = $data->role;
+            $this->foto_lama = $data->foto;
+        }
+        $this->isModalAparaturOpen = true;
+    }
+
+    public function simpanAparatur()
+    {
+        $this->validate([
+            'nama' => 'required|string|max:255',
+            'role' => 'required|string|max:255',
+            'foto' => 'nullable|image|max:2048', // Foto opsional pas edit
+        ]);
+
+        $pathFoto = $this->foto_lama;
+        if ($this->foto) {
+            if ($this->foto_lama) {
+                Storage::disk('public')->delete($this->foto_lama);
+            }
+            $pathFoto = $this->foto->store('struktur/aparatur', 'public');
+        }
+
+        AparaturDesa::updateOrCreate(
+            ['id' => $this->aparatur_id],
+            [
+                'nama' => $this->nama,
+                'role' => $this->role,
+                'foto' => $pathFoto,
+            ]
         );
 
-        session()->flash('message', 'Bagan Struktur berhasil disimpan!');
-        $this->closeModalBagan();
+        $this->isModalAparaturOpen = false;
+        $this->resetAparatur();
+        session()->flash('message_aparatur', 'Data Aparatur berhasil disimpan!');
     }
 
-    public function deleteBagan($id)
+    public function hapusAparatur($id)
     {
-        $bagan = OrganizationChart::find($id);
-        if ($bagan) {
-            if ($bagan->gambar) { // Disesuaikan dengan nama kolom Muti
-                Storage::disk('public')->delete($bagan->gambar);
-            }
-            $bagan->delete();
-            session()->flash('message', 'Bagan Struktur berhasil dihapus!');
+        $data = AparaturDesa::find($id);
+        if ($data->foto) {
+            Storage::disk('public')->delete($data->foto);
         }
+        $data->delete();
+        session()->flash('message_aparatur', 'Data Aparatur berhasil dihapus!');
     }
 
-    /* =======================================================
-       LOGIKA CRUD ANGGOTA ORGANISASI (LAMA/ASLI)
-       ======================================================= */
-
-    public function create()
+    public function resetAparatur()
     {
-        $this->resetFields();
-        $this->showModal = true;
-    }
-
-    public function edit($id)
-    {
-        $this->resetFields();
-        
-        $item = Organisasi::findOrFail($id);
-        $this->item_id = $item->id;
-        $this->nama = $item->nama;
-        $this->jabatan = $item->jabatan;
-        $this->urutan = $item->urutan;
-        $this->fotoLama = $item->foto;
-        
-        $this->showModal = true;
-    }
-
-    public function save()
-    {
-        $this->validate();
-
-        $data = [
-            'nama' => $this->nama,
-            'jabatan' => $this->jabatan,
-            'urutan' => $this->urutan ?? 0,
-        ];
-
-        if ($this->foto) {
-            if ($this->item_id && $this->fotoLama) {
-                Storage::disk('public')->delete($this->fotoLama);
-            }
-            $data['foto'] = $this->foto->store('organisasi', 'public');
-        }
-
-        Organisasi::updateOrCreate(['id' => $this->item_id], $data);
-
-        session()->flash('message', $this->item_id ? 'Data berhasil diupdate!' : 'Data berhasil ditambahkan!');
-        $this->closeModal();
-    }
-
-    public function delete($id)
-    {
-        $item = Organisasi::findOrFail($id);
-        if ($item->foto) {
-            Storage::disk('public')->delete($item->foto);
-        }
-        $item->delete();
-        session()->flash('message', 'Data berhasil dihapus!');
-    }
-
-    public function closeModal()
-    {
-        $this->showModal = false;
-        $this->resetFields();
-    }
-
-    public function resetFields()
-    {
-        $this->item_id = null;
+        $this->aparatur_id = null;
         $this->nama = '';
-        $this->jabatan = '';
-        $this->urutan = null;
+        $this->role = '';
         $this->foto = null;
-        $this->fotoLama = null;
-        $this->resetErrorBag();
+        $this->foto_lama = null;
     }
 }

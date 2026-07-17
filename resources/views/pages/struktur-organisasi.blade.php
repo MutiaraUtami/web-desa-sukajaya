@@ -61,11 +61,11 @@
             </div>
             
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-                @forelse ($organisasi as $o)
+                @forelse ($aparatur as $o)
                     <div class="bg-white rounded-lg shadow p-4 text-center border border-gray-100 hover:shadow-md transition relative group">
                         <img src="{{ $o->foto ? asset('storage/'.$o->foto) : 'https://ui-avatars.com/api/?name='.urlencode($o->nama) }}" class="w-24 h-24 rounded-full mx-auto object-cover mb-3 border-2 border-gray-200">
                         <div class="font-semibold text-gray-800">{{ $o->nama }}</div>
-                        <div class="text-sm text-gray-500 font-medium mt-0.5">{{ $o->jabatan }}</div>
+                        <div class="text-sm text-gray-500 font-medium mt-0.5">{{ $o->role }}</div>
                         
                         {{-- Opsi CRUD untuk Anggota Aparatur (Muncul saat hover jika login) --}}
                         @auth
