@@ -14,20 +14,20 @@ class DemografisView extends Component
     public function render()
     {
         // 1. Ambil list RW untuk Dropdown
-        $listRw = StatistikPenduduk::whereNotNull('dusun_rw')
-            ->where('dusun_rw', '!=', '')
-            ->distinct()
-            ->pluck('dusun_rw');
+       $listRw = StatistikPenduduk::whereNotNull('dusun_rw')
+        ->where('dusun_rw', '!=', '')
+        ->distinct()
+        ->pluck('dusun_rw');
 
         // 2. Query Data sesuai Filter
-        $query = StatistikPenduduk::query();
-        if ($this->filterRw !== 'Semua') {
-            $query->where('dusun_rw', $this->filterRw);
-        }
+       $query = StatistikPenduduk::query();
+    if ($this->filterRw !== 'Semua') {
+        $query->where('dusun_rw', $this->filterRw);
+    }
 
         // Data untuk Tabel
-        $statistik = (clone $query)->orderBy('tahun', 'desc')->orderBy('dusun_rw', 'asc')->get();
-
+        $statistik = (clone $query)->orderBy('tahun', 'desc')->orderBy('bulan', 'desc')->get();
+        
         // 3. Olah Data untuk Chart (Tahun Terlama ke Terbaru)
         $rawData = (clone $query)->orderBy('tahun', 'asc')->get();
         $labels = [];

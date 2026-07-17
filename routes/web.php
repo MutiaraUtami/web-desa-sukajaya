@@ -11,12 +11,14 @@ use App\Livewire\Admin\OrganisasiManager;
 use App\Livewire\Admin\ProfilManager;
 use App\Livewire\Admin\StatistikManager;
 use App\Livewire\Admin\UmkmManager;
+use App\Livewire\Admin\GalleryManager; // Tambahan import untuk Admin Gallery
 use App\Livewire\Frontend\AgendaList;
 use App\Livewire\Frontend\ApbdesView;
 use App\Livewire\Frontend\BeritaList;
 use App\Livewire\Frontend\DemografisView;
 use App\Livewire\Frontend\StatistikView;
 use App\Livewire\Frontend\UmkmList;
+use App\Livewire\Frontend\GalleryView; // Tambahan import untuk Frontend Gallery
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Admin\InformasiDemografiManager;
 use App\Livewire\Admin\LembagaManager;
@@ -41,6 +43,7 @@ Route::get('/berita', BeritaList::class)->name('berita');
 Route::get('/berita/{slug}', [PageController::class, 'beritaShow'])->name('berita.show');
 Route::get('/umkm', UmkmList::class)->name('umkm');
 Route::get('/apbdes', ApbdesView::class)->name('apbdes');
+Route::get('/gallery', GalleryView::class)->name('gallery.index');
 
 /*
 |--------------------------------------------------------------------------
@@ -71,4 +74,5 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/umkm', UmkmManager::class)->name('umkm');
     Route::get('/apbdes', ApbdesManager::class)->name('apbdes');
     Route::get('/informasi-demografi', InformasiDemografiManager::class)->name('informasi-demografi');
+    Route::get('/gallery', GalleryManager::class)->name('gallery'); 
 });

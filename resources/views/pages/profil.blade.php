@@ -76,56 +76,8 @@
             
             {{-- Grid utama: 6 kolom di desktop. 3 item di baris 1, 2 item di baris 2 (tengah) --}}
             <div class="grid md:grid-cols-2 lg:grid-cols-6 gap-6">
-                
-                {{-- Baris 1: 3 Kolom --}}
-                <div class="bg-white rounded-2xl shadow-sm hover:shadow-md p-6 border border-gray-100 border-t-4 border-t-[#1e6306] lg:col-span-2 transition-all duration-300 hover:-translate-y-1 flex items-start gap-4">
-                    <!-- Icon -->
-                    <div class="p-3 bg-[#1e6306] rounded-xl text-[#fac81b] shrink-0">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
-                        </svg>
-                    </div>
-                    <!-- Text -->
-                    <div>
-                        <h4 class="font-bold text-[#1e6306] text-lg leading-tight mb-1">Alamat Kantor</h4>
-                        <p class="text-[#313131]/80 text-sm leading-relaxed">
-                            {{ $profil->alamat_kantor ?? 'Belum diatur' }}
-                        </p>
-                    </div>
-                </div>
+        
 
-                <div class="bg-white rounded-2xl shadow-sm hover:shadow-md p-6 border border-gray-100 border-t-4 border-t-[#1e6306] lg:col-span-2 transition-all duration-300 hover:-translate-y-1 flex items-start gap-4">
-                    <!-- Icon -->
-                    <div class="p-3 bg-[#1e6306] rounded-xl text-[#fac81b] shrink-0">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-2.896-1.596-5.48-4.18-7.076-7.076l1.293-.97c.362-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z" />
-                        </svg>
-                    </div>
-                    <!-- Text -->
-                    <div>
-                        <h4 class="font-bold text-[#1e6306] text-lg leading-tight mb-1">Telepon</h4>
-                        <p class="text-[#313131]/80 text-sm leading-relaxed">
-                            {{ $profil->telepon ?? 'Belum diatur' }}
-                        </p>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-2xl shadow-sm hover:shadow-md p-6 border border-gray-100 border-t-4 border-t-[#1e6306] lg:col-span-2 transition-all duration-300 hover:-translate-y-1 flex items-start gap-4">
-                    <!-- Icon -->
-                    <div class="p-3 bg-[#1e6306] rounded-xl text-[#fac81b] shrink-0">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
-                        </svg>
-                    </div>
-                    <!-- Text -->
-                    <div>
-                        <h4 class="font-bold text-[#1e6306] text-lg leading-tight mb-1">Email</h4>
-                        <p class="text-[#313131]/80 text-sm leading-relaxed break-all">
-                            {{ $profil->email ?? 'Belum diatur' }}
-                        </p>
-                    </div>
-                </div>
 
                 {{-- Baris 2: 2 Kolom (Posisi di tengah dengan lg:col-start-2) --}}
                 <div class="bg-white rounded-2xl shadow-sm hover:shadow-md p-6 border border-gray-100 border-t-4 border-t-[#1e6306] lg:col-span-2 lg:col-start-2 transition-all duration-300 hover:-translate-y-1 flex items-start gap-4">
@@ -188,7 +140,7 @@
                     <!-- Foto Kantor -->
                     <div class="h-64 lg:h-[300px] relative">
                         {{-- Ganti 'slider-1.jpeg' dengan gambar kantor desa Anda --}}
-                        <img src="{{ asset('images/slider-1.jpeg') }}" 
+                        <img src="{{ asset('images/slider-3.jpeg') }}" 
                              alt="Kantor Desa {{ $profil->nama_desa ?? 'Sukajaya' }}" 
                              class="w-full h-full object-cover">
                     </div>

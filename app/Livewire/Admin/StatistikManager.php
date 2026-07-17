@@ -13,7 +13,7 @@ class StatistikManager extends Component
     // Mengambil fitur Pagination dari branch Muti
     use WithPagination;
 
-    public $statistik_id, $tahun, $dusun_rw, $jumlah_kk, $laki_laki, $perempuan, $usia_0_14, $usia_15_64, $usia_65_keatas;
+    public $statistik_id, $tahun, $bulan, $dusun_rw, $jumlah_kk, $laki_laki, $perempuan, $usia_0_14, $usia_15_64, $usia_65_keatas;
     public $isModalOpen = false;
 
     public function render()
@@ -49,34 +49,30 @@ class StatistikManager extends Component
         $this->tahun = date('Y');
     }
 
-    public function store()
+   public function store()
     {
-        $this->validate([
-            'tahun' => 'required|numeric',
-            'dusun_rw' => 'nullable|string',
-            'jumlah_kk' => 'required|numeric',
-            'laki_laki' => 'required|numeric',
-            'perempuan' => 'required|numeric',
-            'usia_0_14' => 'required|numeric',
-            'usia_15_64' => 'required|numeric',
-            'usia_65_keatas' => 'required|numeric',
-        ]);
-
-        // Fitur cegah duplikat (Tetap dipertahankan)
+        // 1. CEK DUPLIKAT DULU SEBELUM NGAPA-NGAPAIN
         $cekDuplikat = StatistikPenduduk::where('tahun', $this->tahun)
-                                        ->where('dusun_rw', $this->dusun_rw);
+            ->where('bulan', $this->bulan)
+            ->where('dusun_rw', $this->dusun_rw);
 
+        // Kalau lagi mode Edit, kecualikan ID data ini biar nggak bentrok sama dirinya sendiri
         if ($this->statistik_id) {
             $cekDuplikat->where('id', '!=', $this->statistik_id);
         }
 
+        // Kalau ternyata datanya udah ada, STOP! Jangan disave.
         if ($cekDuplikat->exists()) {
-            session()->flash('error', "Gagal! Data untuk {$this->dusun_rw} pada tahun {$this->tahun} sudah ada. Silakan edit data yang sudah tersedia.");
+            session()->flash('error', "Gagal! Data untuk {$this->dusun_rw} bulan {$this->bulan} tahun {$this->tahun} sudah ada. Silakan edit data yang sudah tersedia.");
             $this->closeModal();
-            return; 
+            
+            return; // <-- Perintah 'return' ini bakal menghentikan eksekusi, jadi kodingan save di bawahnya NGGAK AKAN dibaca.
         }
 
+
+        // 2. KALAU AMAN (TIDAK DUPLIKAT), BARU DISIMPAN KE DATABASE (CUKUP 1 KALI SAJA)
         StatistikPenduduk::updateOrCreate(['id' => $this->statistik_id], [
+            'bulan' => $this->bulan,
             'tahun' => $this->tahun,
             'dusun_rw' => $this->dusun_rw,
             'jumlah_kk' => $this->jumlah_kk,
@@ -87,9 +83,12 @@ class StatistikManager extends Component
             'usia_65_keatas' => $this->usia_65_keatas,
         ]);
 
+
+        // 3. TAMPILKAN NOTIFIKASI SUKSES & BERSIHKAN FORM
         session()->flash('message', $this->statistik_id ? 'Data Statistik diperbarui!' : 'Data Statistik ditambahkan!');
         $this->closeModal();
         $this->resetFields();
+        
     }
 
     public function edit($id)

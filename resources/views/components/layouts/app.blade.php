@@ -7,11 +7,23 @@
     <link rel="icon" type="image/png" href="{{ asset('images/logo-desa.png') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Faculty+Glyphic&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
 </head>
+
+<script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js"></script>
+<script>
+    // Inisialisasi GLightbox
+    document.addEventListener('livewire:navigated', () => {
+        const lightbox = GLightbox({
+            selector: '.glightbox'
+        });
+    });
+</script>
+
 <body class="bg-gray-50 text-gray-800">
 
     {{-- Memanggil komponen Navbar --}}

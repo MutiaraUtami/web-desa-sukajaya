@@ -13,10 +13,10 @@
 </head>
 <body class="bg-gray-50 text-gray-800 font-['Plus_Jakarta_Sans']">
     <div class="flex min-h-screen">
-        <aside class="w-64 bg-[#0e2206] text-white flex flex-col shadow-xl">
+        <aside class="w-64 bg-brand-dark text-white flex flex-col shadow-xl">
             <div class="p-6 border-b border-white/10">
                 <h1 class="text-xl font-bold tracking-tight text-white">
-                    <span class="text-[#fac81b]">Admin</span> Sukajaya
+                    <span class="text-brand-yellow">Admin</span> Sukajaya
                 </h1>
             </div>
 
@@ -35,6 +35,7 @@
                         ['route' => 'admin.berita', 'label' => 'Berita'],
                         ['route' => 'admin.umkm', 'label' => 'UMKM'],
                         ['route' => 'admin.apbdes', 'label' => 'APBDes'],
+                        ['route' => 'admin.gallery', 'label' => 'Galeri Foto'],
                     ];
                 @endphp
 
@@ -42,7 +43,7 @@
                     <a href="{{ route($item['route']) }}" 
                        class="block py-3 px-4 transition-all duration-200 border-l-4 
                        {{ request()->routeIs($item['route']) 
-                            ? '!bg-[#1e6306] !border-[#fac81b] rounded-r-lg font-bold text-white shadow-md' 
+                            ? '!bg-[#1e6306] !border-brand-yellow rounded-r-lg font-bold text-white shadow-md' 
                             : '!bg-transparent !border-transparent rounded-lg hover:!bg-[#1e6306]/60 hover:pl-6 text-gray-200 hover:text-white' }}">
                         {{ $item['label'] }}
                     </a>

@@ -9,18 +9,17 @@ class StatistikPenduduk extends Model
 {
     use HasFactory;
 
+    // Ganti isi $fillable ini agar semua data diizinkan masuk ke database
     protected $fillable = [
-        'bulan', 'tahun', 
-        'awal_lk', 'awal_pr',
-        'lahir_lk', 'lahir_pr', 
-        'mati_lk', 'mati_pr',
-        'pindah_lk', 'pindah_pr', 
-        'datang_lk', 'datang_pr',
-        'akhir_lk', 'akhir_pr',
-        'jumlah_kk', 'wajib_ktp', 
-        'ktp_sudah', 'ktp_belum', 
-        'kk_sudah', 'kk_belum', 
-        'keterangan'
+        'bulan',
+        'tahun',
+        'dusun_rw',
+        'jumlah_kk',
+        'laki_laki',
+        'perempuan',
+        'usia_0_14',
+        'usia_15_64',
+        'usia_65_keatas',
     ];
 
     // Accessor untuk total penduduk awal bulan
