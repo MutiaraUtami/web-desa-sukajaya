@@ -21,13 +21,16 @@
             </div>
 
            <nav class="flex-1 p-4 space-y-1.5 text-sm font-medium">
-                @php
+            @php
                     $menu = [
                         ['route' => 'admin.dashboard', 'label' => 'Dashboard'],
                         ['route' => 'admin.profil', 'label' => 'Profil Desa'],
                         ['route' => 'admin.statistik', 'label' => 'Statistik Penduduk'],
                         ['route' => 'admin.informasi-demografi', 'label' => 'Info Demografi'],
-                        ['route' => 'admin.organisasi', 'label' => 'Struktur Organisasi'],
+                        // Ini buat Struktur Pemerintahan (Kembalikan ke rute aslinya)
+                        ['route' => 'admin.organisasi', 'label' => 'Struktur Desa'], 
+                        // Ini menu BARU khusus buat BPD, PKK, dll
+                        ['route' => 'admin.lembaga', 'label' => 'Lembaga Desa'],
                         ['route' => 'admin.agenda', 'label' => 'Agenda'],
                         ['route' => 'admin.berita', 'label' => 'Berita'],
                         ['route' => 'admin.umkm', 'label' => 'UMKM'],

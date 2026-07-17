@@ -72,7 +72,7 @@
                     </div>
                 </div>
 
-                {{-- Dropdown 2 --}}
+              {{-- Dropdown 2 --}}
                 <div class="relative group nav-item w-full md:w-auto border-b md:border-none border-white/10 pb-2 md:pb-0">
                     <button onclick="if(window.innerWidth < 768) { this.nextElementSibling.classList.toggle('hidden'); }" class="hover:text-[#fac81b] py-2 w-full md:w-auto flex justify-between items-center gap-1 cursor-pointer focus:outline-none transition duration-200">
                         Organisasi 
@@ -80,13 +80,13 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path>
                         </svg>
                     </button>
-                    <div class="hidden md:group-hover:block static md:absolute left-0 mt-0 w-full md:w-48 bg-black/20 md:bg-white text-gray-200 md:text-[#313131] rounded-md shadow-none md:shadow-lg py-2 md:border md:border-gray-100">
+                    <!-- Kotaknya dilebarin dikit jadi w-56 biar teksnya muat -->
+                    <div class="hidden md:group-hover:block static md:absolute left-0 mt-0 w-full md:w-56 bg-black/20 md:bg-white text-gray-200 md:text-[#313131] rounded-md shadow-none md:shadow-lg py-2 md:border md:border-gray-100">
                         <a href="{{ route('struktur-organisasi') }}" class="block px-6 md:px-4 py-2 md:hover:bg-green-50 hover:text-[#fac81b] md:hover:text-[#1e6306] font-medium transition">Struktur Organisasi</a>
-                        <a href="#" class="block px-6 md:px-4 py-2 md:hover:bg-green-50 hover:text-[#fac81b] md:hover:text-[#1e6306] font-medium transition">BPD</a>
-                        <a href="#" class="block px-6 md:px-4 py-2 md:hover:bg-green-50 hover:text-[#fac81b] md:hover:text-[#1e6306] font-medium transition">PKK</a>
+                        <a href="{{ route('lembaga-desa') }}" class="block px-6 md:px-4 py-2 md:hover:bg-green-50 hover:text-[#fac81b] md:hover:text-[#1e6306] font-medium transition">Lembaga Desa (BPD, PKK)</a>
                     </div>
                 </div>
-
+                
                 {{-- Dropdown 3 --}}
                 <div class="relative group nav-item w-full md:w-auto border-b md:border-none border-white/10 pb-2 md:pb-0">
                     <button onclick="if(window.innerWidth < 768) { this.nextElementSibling.classList.toggle('hidden'); }" class="hover:text-[#fac81b] py-2 w-full md:w-auto flex justify-between items-center gap-1 cursor-pointer focus:outline-none transition duration-200">

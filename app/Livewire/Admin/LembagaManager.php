@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Layout;
 
 #[Layout('components.layouts.admin')]
-class OrganisasiManager extends Component
+class LembagaManager extends Component
 {
     use WithPagination, WithFileUploads;
 
@@ -20,8 +20,9 @@ class OrganisasiManager extends Component
 
     public function render()
     {
+        // Kodingan ini otomatis nyari view di resources/views/livewire/admin/
         $organisasi = LembagaDesa::orderBy('created_at', 'desc')->paginate(10);
-        return view('livewire.admin.organisasi-manager', compact('organisasi'));
+        return view('livewire.admin.lembaga-manager', compact('organisasi'));
     }
 
     public function create()
@@ -40,25 +41,21 @@ class OrganisasiManager extends Component
         $this->validate([
             'nama_lembaga' => 'required|string|max:255',
             'deskripsi' => 'required|string',
-            // Validasi diubah agar menerima PDF dan Gambar
-            'file_pdf' => 'nullable|mimes:pdf,jpg,jpeg,png|max:5120', // Maks 5MB
+            'file_pdf' => 'nullable|mimes:pdf,jpg,jpeg,png|max:5120',
         ]);
 
         $filePath = $this->old_pdf;
 
-        // Kalau ada file baru di-upload
         if ($this->file_pdf) {
-            if ($this->old_pdf) {
-                Storage::disk('public')->delete($this->old_pdf); // Hapus file lama
-            }
-            $filePath = $this->file_pdf->store('struktur-organisasi', 'public');
+            if ($this->old_pdf) Storage::disk('public')->delete($this->old_pdf);
+            $filePath = $this->file_pdf->store('lembaga-desa', 'public');
         }
 
         LembagaDesa::updateOrCreate(['id' => $this->lembaga_id], [
             'nama_lembaga' => $this->nama_lembaga,
-            'slug' => Str::slug($this->nama_lembaga), // Otomatis bikin URL ramah SEO
+            'slug' => Str::slug($this->nama_lembaga),
             'deskripsi' => $this->deskripsi,
-            'file_pdf' => $filePath, // Tetap disimpan di kolom ini
+            'file_pdf' => $filePath,
         ]);
 
         session()->flash('message', $this->lembaga_id ? 'Lembaga diperbarui!' : 'Lembaga ditambahkan!');
@@ -79,9 +76,7 @@ class OrganisasiManager extends Component
     public function delete($id)
     {
         $lembaga = LembagaDesa::findOrFail($id);
-        if ($lembaga->file_pdf) {
-            Storage::disk('public')->delete($lembaga->file_pdf);
-        }
+        if ($lembaga->file_pdf) Storage::disk('public')->delete($lembaga->file_pdf);
         $lembaga->delete();
         session()->flash('message', 'Lembaga dihapus!');
     }

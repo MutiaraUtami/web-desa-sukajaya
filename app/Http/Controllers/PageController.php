@@ -37,12 +37,25 @@ class PageController extends Controller
         return view('pages.geografis', ['profil' => ProfilDesa::get()]);
     }
 
-    public function strukturOrganisasi()
+   public function strukturOrganisasi()
     {
         return view('pages.struktur-organisasi', [
-            'organisasi' => Organisasi::orderBy('urutan', 'asc')->get(),
-            'bagan' => OrganizationChart::first() // Mengambil gambar bagan pertama/terbaru
+            'profil' => ProfilDesa::get(),
+            'bagan' => OrganizationChart::first(),
+            'organisasi' => \App\Models\Organisasi::get(),
         ]);
+    }
+
+    public function lembagaDesa()
+    {
+        $organisasi = \App\Models\LembagaDesa::all();
+        return view('pages.organisasi', compact('organisasi')); 
+    }
+
+    public function lembagaDesaShow($slug)
+    {
+        $lembaga = \App\Models\LembagaDesa::where('slug', $slug)->firstOrFail();
+        return view('pages.organisasi-show', compact('lembaga'));
     }
 
     public function beritaShow($slug)

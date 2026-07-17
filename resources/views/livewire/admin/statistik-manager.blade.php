@@ -39,6 +39,7 @@
                 @endforeach
             </tbody>
         </table>
+        {{ $statistik->links() }}
     </div>
 
     <!-- Modal Form -->

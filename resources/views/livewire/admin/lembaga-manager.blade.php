@@ -25,7 +25,6 @@
                     <td class="px-4 py-3 font-semibold text-gray-800">{{ $org->nama_lembaga }}</td>
                     <td class="px-4 py-3">
                         @if($org->file_pdf)
-                            <!-- Tulisan "Lihat PDF" diganti jadi "Lihat File" karena bisa gambar -->
                             <a href="{{ asset('storage/' . $org->file_pdf) }}" target="_blank" class="text-blue-600 hover:underline">Lihat File</a>
                         @else
                             <span class="text-gray-400 italic">Belum ada file</span>
@@ -57,7 +56,6 @@
                     <textarea wire:model="deskripsi" rows="5" class="w-full border p-2 rounded-lg" required></textarea>
                 </div>
                 <div class="mb-4">
-                    <!-- Tulisan dan fungsi accept diubah agar menerima Gambar (PNG/JPG) -->
                     <label class="block text-sm font-semibold mb-1">Upload File Struktur (PDF / PNG / JPG)</label>
                     <input type="file" wire:model="file_pdf" accept=".pdf, .png, .jpg, .jpeg" class="w-full border p-2 rounded-lg">
                     <div wire:loading wire:target="file_pdf" class="text-sm text-blue-500 mt-1">Mengunggah file...</div>
