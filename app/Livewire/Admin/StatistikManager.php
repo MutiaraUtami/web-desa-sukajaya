@@ -18,7 +18,6 @@ class StatistikManager extends Component
 
     public function render()
     {
-        // Menggabungkan filter Abang dengan Pagination Muti (tampil 10 data per halaman)
         $statistik = StatistikPenduduk::orderBy('tahun', 'desc')->orderBy('dusun_rw', 'asc')->paginate(10);
         return view('livewire.admin.statistik-manager', compact('statistik'));
     }
