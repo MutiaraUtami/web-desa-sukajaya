@@ -5,90 +5,103 @@ namespace App\Livewire\Admin;
 use App\Models\StatistikPenduduk;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Livewire\Attributes\Layout;
 
+#[Layout('components.layouts.admin')]
 class StatistikManager extends Component
 {
+    // Mengambil fitur Pagination dari branch Muti
     use WithPagination;
 
-    public $statistik_id;
-    public $dusun_rw, $tahun, $jumlah_kk, $laki_laki, $perempuan;
-    public $usia_0_14, $usia_15_64, $usia_65_keatas, $keterangan;
-
-    public bool $showModal = false;
-
-    protected function rules()
-    {
-        return [
-            'dusun_rw' => 'nullable|string|max:255',
-            'tahun' => 'required|integer|min:2000|max:2100',
-            'jumlah_kk' => 'required|integer|min:0',
-            'laki_laki' => 'required|integer|min:0',
-            'perempuan' => 'required|integer|min:0',
-            'usia_0_14' => 'required|integer|min:0',
-            'usia_15_64' => 'required|integer|min:0',
-            'usia_65_keatas' => 'required|integer|min:0',
-            'keterangan' => 'nullable|string',
-        ];
-    }
+    public $statistik_id, $tahun, $bulan, $dusun_rw, $jumlah_kk, $laki_laki, $perempuan, $usia_0_14, $usia_15_64, $usia_65_keatas;
+    public $isModalOpen = false;
 
     public function render()
     {
-        return view('livewire.admin.statistik-manager', [
-            'data' => StatistikPenduduk::orderByDesc('tahun')->paginate(10),
-        ])->layout('layouts.admin');
+        $statistik = StatistikPenduduk::orderBy('tahun', 'desc')->orderBy('dusun_rw', 'asc')->paginate(10);
+        return view('livewire.admin.statistik-manager', compact('statistik'));
     }
 
     public function create()
     {
-        $this->resetForm();
-        $this->showModal = true;
+        $this->resetFields();
+        $this->openModal();
+    }
+
+    public function openModal()
+    {
+        $this->isModalOpen = true;
+    }
+
+    public function closeModal()
+    {
+        $this->isModalOpen = false;
+    }
+
+    public function resetFields()
+    {
+        // Mengadopsi cara Muti yang lebih bersih pakai $this->reset()
+        $this->reset([
+            'statistik_id', 'dusun_rw', 'jumlah_kk', 'laki_laki', 
+            'perempuan', 'usia_0_14', 'usia_15_64', 'usia_65_keatas'
+        ]);
+        $this->tahun = date('Y');
+    }
+
+   public function store()
+    {
+        // 1. CEK DUPLIKAT DULU SEBELUM NGAPA-NGAPAIN
+        $cekDuplikat = StatistikPenduduk::where('tahun', $this->tahun)
+            ->where('bulan', $this->bulan)
+            ->where('dusun_rw', $this->dusun_rw);
+
+        // Kalau lagi mode Edit, kecualikan ID data ini biar nggak bentrok sama dirinya sendiri
+        if ($this->statistik_id) {
+            $cekDuplikat->where('id', '!=', $this->statistik_id);
+        }
+
+        // Kalau ternyata datanya udah ada, STOP! Jangan disave.
+        if ($cekDuplikat->exists()) {
+            session()->flash('error', "Gagal! Data untuk {$this->dusun_rw} bulan {$this->bulan} tahun {$this->tahun} sudah ada. Silakan edit data yang sudah tersedia.");
+            $this->closeModal();
+            
+            return; // <-- Perintah 'return' ini bakal menghentikan eksekusi, jadi kodingan save di bawahnya NGGAK AKAN dibaca.
+        }
+
+
+        // 2. KALAU AMAN (TIDAK DUPLIKAT), BARU DISIMPAN KE DATABASE (CUKUP 1 KALI SAJA)
+        StatistikPenduduk::updateOrCreate(['id' => $this->statistik_id], [
+            'bulan' => $this->bulan,
+            'tahun' => $this->tahun,
+            'dusun_rw' => $this->dusun_rw,
+            'jumlah_kk' => $this->jumlah_kk,
+            'laki_laki' => $this->laki_laki,
+            'perempuan' => $this->perempuan,
+            'usia_0_14' => $this->usia_0_14,
+            'usia_15_64' => $this->usia_15_64,
+            'usia_65_keatas' => $this->usia_65_keatas,
+        ]);
+
+
+        // 3. TAMPILKAN NOTIFIKASI SUKSES & BERSIHKAN FORM
+        session()->flash('message', $this->statistik_id ? 'Data Statistik diperbarui!' : 'Data Statistik ditambahkan!');
+        $this->closeModal();
+        $this->resetFields();
+        
     }
 
     public function edit($id)
     {
-        $item = StatistikPenduduk::findOrFail($id);
-        $this->statistik_id = $item->id;
-        $this->dusun_rw = $item->dusun_rw;
-        $this->tahun = $item->tahun;
-        $this->jumlah_kk = $item->jumlah_kk;
-        $this->laki_laki = $item->laki_laki;
-        $this->perempuan = $item->perempuan;
-        $this->usia_0_14 = $item->usia_0_14;
-        $this->usia_15_64 = $item->usia_15_64;
-        $this->usia_65_keatas = $item->usia_65_keatas;
-        $this->keterangan = $item->keterangan;
-        $this->showModal = true;
-    }
-
-    public function save()
-    {
-        $data = $this->validate();
-
-        StatistikPenduduk::updateOrCreate(['id' => $this->statistik_id], $data);
-
-        session()->flash('message', $this->statistik_id ? 'Data berhasil diperbarui.' : 'Data berhasil ditambahkan.');
-        $this->showModal = false;
-        $this->resetForm();
+        $data = StatistikPenduduk::findOrFail($id);
+        $this->statistik_id = $id;
+        // Mengadopsi cara Muti memanggil data otomatis (lebih ringkas dari sebelumnya)
+        $this->fill($data->toArray());
+        $this->openModal();
     }
 
     public function delete($id)
     {
         StatistikPenduduk::findOrFail($id)->delete();
-        session()->flash('message', 'Data berhasil dihapus.');
-    }
-
-    public function resetForm()
-    {
-        $this->reset([
-            'statistik_id', 'dusun_rw', 'tahun', 'jumlah_kk', 'laki_laki',
-            'perempuan', 'usia_0_14', 'usia_15_64', 'usia_65_keatas', 'keterangan',
-        ]);
-        $this->resetErrorBag();
-    }
-
-    public function closeModal()
-    {
-        $this->showModal = false;
-        $this->resetForm();
+        session()->flash('message', 'Data Statistik dihapus!');
     }
 }

@@ -10,13 +10,8 @@ return new class extends Migration
     {
         Schema::create('apbdes', function (Blueprint $table) {
             $table->id();
-            $table->integer('tahun_anggaran');
-            $table->enum('jenis', ['pendapatan', 'belanja', 'pembiayaan']);
-            $table->string('bidang')->nullable();
-            $table->string('uraian');
-            $table->decimal('anggaran', 15, 2)->default(0);
-            $table->decimal('realisasi', 15, 2)->default(0);
-            $table->text('keterangan')->nullable();
+            $table->string('tahun_anggaran')->unique();
+            $table->string('file_pdf');
             $table->timestamps();
         });
     }

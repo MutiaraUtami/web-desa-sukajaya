@@ -2,26 +2,34 @@
 
 namespace App\Livewire\Frontend;
 
-use App\Models\Apbdes;
 use Livewire\Component;
+use App\Models\Apbdes;
+use Livewire\Attributes\Layout;
 
+#[Layout('components.layouts.app')]
 class ApbdesView extends Component
 {
-    public $tahun;
-
-    public function mount()
-    {
-        $this->tahun = Apbdes::max('tahun_anggaran') ?? date('Y');
-    }
+    public $tahun; // Variabel yang diikat ke dropdown
 
     public function render()
     {
-        $data = Apbdes::where('tahun_anggaran', $this->tahun)->orderBy('jenis')->get()->groupBy('jenis');
-        $tahunList = Apbdes::select('tahun_anggaran')->distinct()->orderByDesc('tahun_anggaran')->pluck('tahun_anggaran');
+        // 1. Ambil semua tahun yang tersedia di database, urutkan dari terbaru
+        $tahunList = Apbdes::orderBy('tahun_anggaran', 'desc')->pluck('tahun_anggaran')->toArray();
 
-        return view('livewire.frontend.apbdes-view', [
-            'data' => $data,
-            'tahunList' => $tahunList,
-        ])->layout('layouts.app');
+        // 2. Jika dropdown kosong (baru buka halaman), otomatis pilih tahun terbaru
+        if (!$this->tahun && count($tahunList) > 0) {
+            $this->tahun = $tahunList[0];
+        }
+
+        // 3. Cari URL file PDF berdasarkan tahun yang dipilih di dropdown
+        $pdfUrl = null;
+        if ($this->tahun) {
+            $dataApbdes = Apbdes::where('tahun_anggaran', $this->tahun)->first();
+            if ($dataApbdes) {
+                $pdfUrl = $dataApbdes->file_pdf;
+            }
+        }
+
+        return view('livewire.frontend.apbdes-view', compact('tahunList', 'pdfUrl'));
     }
 }

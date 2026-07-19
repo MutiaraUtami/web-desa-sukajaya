@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Berita;
 use App\Models\Organisasi;
 use App\Models\ProfilDesa;
+use App\Models\OrganizationChart;
+use App\Models\AparaturDesa;
 
 class PageController extends Controller
 {
@@ -36,11 +38,28 @@ class PageController extends Controller
         return view('pages.geografis', ['profil' => ProfilDesa::get()]);
     }
 
-    public function strukturOrganisasi()
+  public function strukturOrganisasi()
+{
+    // Ambil data bagan (1 data pertama)
+    $bagan = OrganizationChart::first();
+
+    // Ambil semua data aparatur dari database
+    $aparatur = AparaturDesa::orderBy('created_at', 'asc')->get();
+
+    // Kirim ke view (pastikan nama view-nya sesuai dengan yang abang punya)
+    return view('pages.struktur-organisasi', compact('bagan', 'aparatur')); 
+}
+
+    public function lembagaDesa()
     {
-        return view('pages.struktur-organisasi', [
-            'organisasi' => Organisasi::orderBy('urutan')->get(),
-        ]);
+        $organisasi = \App\Models\LembagaDesa::all();
+        return view('pages.organisasi', compact('organisasi')); 
+    }
+
+    public function lembagaDesaShow($slug)
+    {
+        $lembaga = \App\Models\LembagaDesa::where('slug', $slug)->firstOrFail();
+        return view('pages.organisasi-show', compact('lembaga'));
     }
 
     public function beritaShow($slug)

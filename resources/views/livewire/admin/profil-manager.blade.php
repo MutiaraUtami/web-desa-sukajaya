@@ -1,35 +1,52 @@
 <div>
     <h2 class="text-xl font-bold mb-4">Edit Profil Desa</h2>
 
-    @if (session()->has('message'))
-        <div class="bg-green-100 text-green-800 p-3 rounded mb-4">{{ session('message') }}</div>
+    @if (session()->has('success'))
+        <div class="bg-green-100 text-green-800 p-3 rounded mb-4">{{ session('success') }}</div>
     @endif
 
-    <form wire:submit="save" class="bg-white rounded shadow p-6 space-y-4">
+    <form wire:submit.prevent="simpan" class="space-y-4">
+        
+        <div class="grid grid-cols-2 gap-3">
+            <div>
+                <label class="block text-sm font-medium">Nama Desa</label>
+                <input type="text" wire:model="nama_desa" class="w-full border rounded p-2">
+            </div>
+            <div>
+                <label class="block text-sm font-medium">Tingkat Perkembangan Desa</label>
+                <select wire:model="tingkat_perkembangan" class="w-full border rounded p-2 bg-white">
+                    <option value="">-- Pilih Tingkat Perkembangan --</option>
+                    <option value="Swadaya">Swadaya</option>
+                    <option value="Swakarya">Swakarya</option>
+                    <option value="Swasembada">Swasembada</option>
+                </select>
+                @error('tingkat_perkembangan') 
+                    <span class="text-red-500 text-xs">{{ $message }}</span> 
+                @enderror
+            </div>
+        </div>
+
         <div>
-            <label class="block text-sm font-medium">Nama Desa</label>
-            <input type="text" wire:model="nama_desa" class="w-full border rounded p-2">
+            <label class="block text-sm font-medium">Sambutan Hero Web (Paragraf Singkat)</label>
+            <textarea wire:model="sambutan" rows="2" class="w-full border rounded p-2"></textarea>
         </div>
         <div>
-            <label class="block text-sm font-medium">Sambutan (untuk Landing Page)</label>
-            <textarea wire:model="sambutan" rows="3" class="w-full border rounded p-2"></textarea>
+            <label class="block text-sm font-medium">Tentang Desa (Sejarah/Deskripsi)</label>
+            <textarea wire:model="sejarah" rows="5" class="w-full border rounded p-2" placeholder="Gunakan enter untuk membuat paragraf baru"></textarea>
         </div>
         <div>
             <label class="block text-sm font-medium">Visi</label>
             <textarea wire:model="visi" rows="3" class="w-full border rounded p-2"></textarea>
         </div>
         <div>
-            <label class="block text-sm font-medium">Misi</label>
-            <textarea wire:model="misi" rows="4" class="w-full border rounded p-2" placeholder="Bisa ditulis per poin, pisahkan dengan baris baru"></textarea>
+            <label class="block text-sm font-medium">Misi (Pisahkan tiap poin dengan Enter)</label>
+            <textarea wire:model="misi" rows="5" class="w-full border rounded p-2" placeholder="1. Meningkatkan pelayanan... &#10;2. Membangun infrastruktur..."></textarea>
         </div>
         <div>
-            <label class="block text-sm font-medium">Sejarah Desa</label>
-            <textarea wire:model="sejarah" rows="5" class="w-full border rounded p-2"></textarea>
+            <label class="block text-sm font-medium">Potensi & Geografis Desa</label>
+            <textarea wire:model="geografis" rows="4" class="w-full border rounded p-2" placeholder="Jelaskan kondisi alam dan potensi desa di sini"></textarea>
         </div>
-        <div>
-            <label class="block text-sm font-medium">Geografis</label>
-            <textarea wire:model="geografis" rows="4" class="w-full border rounded p-2"></textarea>
-        </div>
+        
         <div class="grid grid-cols-2 gap-3">
             <div>
                 <label class="block text-sm font-medium">Luas Wilayah</label>
@@ -37,27 +54,13 @@
             </div>
             <div>
                 <label class="block text-sm font-medium">Link Embed Google Maps</label>
-                <input type="text" wire:model="peta_embed" class="w-full border rounded p-2">
-            </div>
-            <div>
-                <label class="block text-sm font-medium">Batas Utara</label>
-                <input type="text" wire:model="batas_utara" class="w-full border rounded p-2">
-            </div>
-            <div>
-                <label class="block text-sm font-medium">Batas Selatan</label>
-                <input type="text" wire:model="batas_selatan" class="w-full border rounded p-2">
-            </div>
-            <div>
-                <label class="block text-sm font-medium">Batas Timur</label>
-                <input type="text" wire:model="batas_timur" class="w-full border rounded p-2">
-            </div>
-            <div>
-                <label class="block text-sm font-medium">Batas Barat</label>
-                <input type="text" wire:model="batas_barat" class="w-full border rounded p-2">
+                <input type="text" wire:model="peta_embed" class="w-full border rounded p-2" placeholder="https://www.google.com/maps/embed?...">
             </div>
         </div>
+        
         <hr>
-        <div class="grid grid-cols-2 gap-3">
+        
+        <div class="grid grid-cols-3 gap-3">
             <div>
                 <label class="block text-sm font-medium">Alamat Kantor Desa</label>
                 <input type="text" wire:model="alamat_kantor" class="w-full border rounded p-2">
@@ -71,8 +74,9 @@
                 <input type="email" wire:model="email" class="w-full border rounded p-2">
             </div>
         </div>
-        <div class="pt-2">
-            <button type="submit" class="px-6 py-2 rounded bg-green-600 text-white">Simpan Perubahan</button>
+        
+        <div class="pt-4">
+            <button type="submit" class="px-6 py-2 rounded bg-green-600 text-white font-bold hover:bg-green-700">Simpan Perubahan</button>
         </div>
     </form>
 </div>

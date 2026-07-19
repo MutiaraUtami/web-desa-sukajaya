@@ -1,5 +1,5 @@
-@import 'tailwindcss';
-@import '../../vendor/livewire/flux/dist/flux.css';
+@import "tailwindcss";
+@import "../../vendor/livewire/flux/dist/flux.css";
 
 @source '../views';
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
@@ -9,41 +9,68 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-title: "Faculty Glyphic", sans-serif;
+    --font-sans: "Plus Jakarta Sans", sans-serif;
 
-    --color-zinc-50: #fafafa;
-    --color-zinc-100: #f5f5f5;
-    --color-zinc-200: #e5e5e5;
-    --color-zinc-300: #d4d4d4;
-    --color-zinc-400: #a3a3a3;
-    --color-zinc-500: #737373;
-    --color-zinc-600: #525252;
-    --color-zinc-700: #404040;
-    --color-zinc-800: #262626;
-    --color-zinc-900: #171717;
-    --color-zinc-950: #0a0a0a;
+    /* Custom Color Palette (Hanya yang dipakai & esensial) */
+    --color-brand-green: #1e6306; /* Hijau Utama */
+    --color-brand-yellow: #fac81b; /* Kuning Aksen */
+    --color-brand-dark: #0e2206; /* Hijau Gelap */
+    --color-brand-charcoal: #313131; /* Abu-abu Gelap */
 
-    --color-accent: var(--color-neutral-800);
-    --color-accent-content: var(--color-neutral-800);
+    /* Penyesuaian Komponen Flux & Utility Global */
+    --color-accent: var(--color-brand-green);
+    --color-accent-content: var(--color-brand-green);
     --color-accent-foreground: var(--color-white);
+
+    --animate-marquee: marquee 20s linear infinite;
+
+    @keyframes marquee {
+        0% {
+            transform: translateX(0%);
+        }
+        100% {
+            transform: translateX(-100%);
+        }
+    }
 }
 
 @layer theme {
     .dark {
-        --color-accent: var(--color-white);
-        --color-accent-content: var(--color-white);
-        --color-accent-foreground: var(--color-neutral-800);
+        --color-accent: var(--color-brand-yellow);
+        --color-accent-content: var(--color-brand-yellow);
+        --color-accent-foreground: var(--color-brand-dark);
     }
 }
 
 @layer base {
-
     *,
     ::after,
     ::before,
     ::backdrop,
     ::file-selector-button {
-        border-color: var(--color-gray-200, currentColor);
+        border-color: rgba(
+            49,
+            49,
+            49,
+            0.2
+        ); /* Menggunakan warna Charcoal dengan opasitas rendah untuk border */
+    }
+
+    body {
+        color: var(--color-brand-charcoal);
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    .font-heading {
+        font-family: var(--font-title);
+        letter-spacing: 0.025em;
+        color: var(--color-brand-dark);
     }
 }
 
@@ -52,15 +79,174 @@
 }
 
 [data-flux-label] {
-    @apply  !mb-0 !leading-tight;
+    @apply !mb-0 !leading-tight;
 }
 
 input:focus[data-flux-control],
 textarea:focus[data-flux-control],
 select:focus[data-flux-control] {
-    @apply outline-hidden ring-2 ring-accent ring-offset-2 ring-offset-accent-foreground;
+    @apply outline-hidden ring-2 ring-accent ring-offset-2 ring-offset-white;
 }
 
-/* \[:where(&)\]:size-4 {
-    @apply size-4;
-} */
+/* ==========================================================================
+   Kustomisasi Khas Navbar & Footer (Website Desa)
+   ========================================================================== */
+
+/* Efek transisi global navigasi */
+nav a,
+nav button {
+    transition: all 0.3s ease-in-out;
+}
+
+/* Membungkus item navigasi agar posisi garis hover presisi */
+.nav-item {
+    position: relative;
+}
+
+/* Membua efek underline berjalan yang berlaku untuk link & tombol dropdown */
+.nav-item::after {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 2px;
+    left: 0;
+    background-color: var(
+        --color-brand-yellow
+    ); /* Diubah ke kuning agar kontras di atas hijau */
+    transition: width 0.3s ease;
+}
+
+/* Trigger garis memanjang saat item utama di-hover */
+.nav-item:hover::after {
+    width: 100%;
+}
+
+/* Menonaktifkan underline bawaan browser */
+nav #menu a:hover {
+    text-decoration: none !important;
+}
+
+/* Desain Tombol Admin Dashboard */
+nav a[href*="admin/dashboard"] {
+    background-color: var(--color-brand-green);
+    color: var(--color-white);
+    padding: 0.4rem 0.8rem;
+    border-radius: 0.375rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+nav a[href*="admin/dashboard"]:hover {
+    background-color: var(--color-brand-dark);
+    transform: translateY(-1px);
+}
+
+/* Navigasi saat versi Mobile */
+/* Navigasi saat versi Mobile */
+@media (max-width: 767px) {
+    #menu {
+        background-color: var(--color-brand-dark, #0e2206);
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        padding: 1.25rem 1rem !important; /* Padding yang lebih proporsional */
+        flex-direction: column;
+        align-items: flex-start !important;
+        gap: 0.25rem !important; /* Jarak antar item lebih rapat, diatur oleh padding dalam */
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+        border-top: 1px solid rgba(255, 255, 255, 0.05); /* Pemisah tipis dari header */
+    }
+
+    #menu .relative,
+    .nav-item {
+        width: 100%;
+    }
+
+    /* Matikan garis bawah hover di HP */
+    .nav-item::after {
+        display: none !important;
+    }
+
+    /* Styling dasar link & tombol menu utama yang lebih clean */
+    #menu a,
+    #menu button {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        padding: 0.875rem 1rem;
+        border-radius: 0.5rem; /* Sudut membulat agar terlihat modern saat disentuh */
+        color: var(--color-white);
+        font-weight: 500;
+        border: none !important; /* Menghapus garis pemisah yang membuat sesak */
+        background-color: transparent;
+    }
+
+    /* Efek saat item menu disentuh (Tap Highlight) */
+    #menu a:active,
+    #menu button:active {
+        background-color: rgba(255, 255, 255, 0.05);
+    }
+
+    /* Styling Submenu (Dropdown) ala Accordion Clean */
+    #menu .nav-item > div {
+        position: relative !important;
+        width: calc(100% - 1rem) !important;
+        background-color: transparent !important; /* Dibuat transparan, tidak gelap */
+        box-shadow: none !important;
+        padding: 0.25rem 0 0.25rem 1.5rem !important; /* Ruang untuk indentasi */
+        margin-top: 0;
+        margin-left: 1rem; /* Posisi garis hierarki */
+        border: none !important;
+        border-left: 1px solid rgba(255, 255, 255, 0.15) !important; /* Garis tipis penanda submenu */
+    }
+
+    /* Item di dalam submenu */
+    #menu .nav-item > div a {
+        padding: 0.6rem 1rem !important;
+        font-size: 0.9rem;
+        color: rgba(
+            255,
+            255,
+            255,
+            0.7
+        ) !important; /* Warna sedikit redup untuk hierarki */
+        font-weight: 400;
+    }
+
+    #menu .nav-item > div a:hover,
+    #menu .nav-item > div a:active {
+        color: var(--color-brand-yellow, #fac81b) !important;
+        background-color: transparent !important;
+    }
+
+    /* Tombol Aksi Utama (Login / Dashboard) di bagian bawah */
+    #menu a[href*="login"],
+    nav a[href*="admin/dashboard"] {
+        margin-top: 1rem;
+        padding: 0.875rem;
+        text-align: center;
+        justify-content: center;
+        border-radius: 0.5rem;
+        width: 100%;
+    }
+
+    #menu a[href*="login"] {
+        background-color: var(--color-white, #ffffff);
+        color: var(--color-brand-dark, #0e2206) !important;
+        font-weight: 600;
+    }
+
+    nav a[href*="admin/dashboard"] {
+        background-color: var(--color-brand-green, #1e6306);
+        color: white !important;
+        font-weight: 600;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    }
+}
+
+/* Border Atas Footer */
+footer {
+    border-top: 4px solid var(--color-brand-dark);
+}

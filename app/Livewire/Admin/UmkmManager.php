@@ -2,19 +2,21 @@
 
 namespace App\Livewire\Admin;
 
-use App\Models\Umkm;
 use Livewire\Component;
-use Livewire\WithFileUploads;
+use App\Models\Umkm;
 use Livewire\WithPagination;
+use Livewire\WithFileUploads;
+use Livewire\Attributes\Layout;
+use Illuminate\Support\Facades\Storage;
 
+#[Layout('components.layouts.admin')]
 class UmkmManager extends Component
 {
     use WithPagination, WithFileUploads;
 
-    public $item_id, $nama_usaha, $pemilik, $kategori, $deskripsi, $alamat, $kontak;
-    public $foto;
-    public $fotoLama;
-    public bool $showModal = false;
+    public $nama_usaha, $pemilik, $kategori, $deskripsi, $alamat, $kontak, $foto;
+    public $item_id, $fotoLama;
+    public $showModal = false;
 
     protected function rules()
     {
@@ -31,19 +33,19 @@ class UmkmManager extends Component
 
     public function render()
     {
-        return view('livewire.admin.umkm-manager', [
-            'data' => Umkm::orderByDesc('created_at')->paginate(10),
-        ])->layout('layouts.admin');
+        $data = Umkm::orderBy('nama_usaha', 'asc')->paginate(9);
+        return view('livewire.admin.umkm-manager', compact('data'));
     }
 
     public function create()
     {
-        $this->resetForm();
+        $this->resetFields();
         $this->showModal = true;
     }
 
     public function edit($id)
     {
+        $this->resetFields();
         $item = Umkm::findOrFail($id);
         $this->item_id = $item->id;
         $this->nama_usaha = $item->nama_usaha;
@@ -70,31 +72,44 @@ class UmkmManager extends Component
         ];
 
         if ($this->foto) {
+            if ($this->item_id && $this->fotoLama) {
+                Storage::disk('public')->delete($this->fotoLama);
+            }
             $data['foto'] = $this->foto->store('umkm', 'public');
         }
 
         Umkm::updateOrCreate(['id' => $this->item_id], $data);
-
-        session()->flash('message', 'Data UMKM berhasil disimpan.');
-        $this->showModal = false;
-        $this->resetForm();
+        session()->flash('message', 'Data UMKM berhasil disimpan!');
+        $this->closeModal();
     }
 
     public function delete($id)
     {
-        Umkm::findOrFail($id)->delete();
-        session()->flash('message', 'Data UMKM berhasil dihapus.');
-    }
-
-    public function resetForm()
-    {
-        $this->reset(['item_id', 'nama_usaha', 'pemilik', 'kategori', 'deskripsi', 'alamat', 'kontak', 'foto', 'fotoLama']);
-        $this->resetErrorBag();
+        $item = Umkm::findOrFail($id);
+        if ($item->foto) {
+            Storage::disk('public')->delete($item->foto);
+        }
+        $item->delete();
+        session()->flash('message', 'Data UMKM berhasil dihapus!');
     }
 
     public function closeModal()
     {
         $this->showModal = false;
-        $this->resetForm();
+        $this->resetFields();
+    }
+
+    public function resetFields()
+    {
+        $this->item_id = null;
+        $this->nama_usaha = '';
+        $this->pemilik = '';
+        $this->kategori = '';
+        $this->deskripsi = '';
+        $this->alamat = '';
+        $this->kontak = '';
+        $this->foto = null;
+        $this->fotoLama = null;
+        $this->resetErrorBag();
     }
 }

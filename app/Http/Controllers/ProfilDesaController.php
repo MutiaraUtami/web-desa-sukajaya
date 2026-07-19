@@ -29,7 +29,6 @@ class ProfilDesaController extends Controller
             'misi'      => 'nullable|string',
             'geografis' => 'nullable|string',
             // Catatan: Untuk upload gambar 'logo', kita skip dulu validasinya sementara 
-            // biar Abang fokus ke teksnya dulu. Upload file ada trik khususnya nanti.
         ]);
 
         // Cari data pertama di tabel, kalau belum ada sama sekali, bikin baru
