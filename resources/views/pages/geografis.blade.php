@@ -69,19 +69,19 @@
                     <tbody class="text-sm text-gray-600 divide-y divide-gray-100">
                         <tr>
                             <td class="px-6 py-4 font-medium text-gray-900 bg-gray-50/50">Sebelah Utara</td>
-                            <td class="px-6 py-4">Berbatasan dengan Desa Cilalawi atau wilayah Kecamatan Sukatani lainnya</td>
+                            <td class="px-6 py-4">Berbatasan dengan Desa Cijantung, Kec. Sukatani</td>
                         </tr>
                         <tr>
                             <td class="px-6 py-4 font-medium text-gray-900 bg-gray-50/50">Sebelah Selatan</td>
-                            <td class="px-6 py-4">Berbatasan dengan Desa Cijantung dan Kecamatan Darangdan</td>
+                            <td class="px-6 py-4">Berbatasan dengan Desa Sukatani dan Desa Malangnengah (Kec. Sukatani)</td>
                         </tr>
                         <tr>
                             <td class="px-6 py-4 font-medium text-gray-900 bg-gray-50/50">Sebelah Timur</td>
-                            <td class="px-6 py-4">Berbatasan dengan wilayah Kecamatan Darangdan</td>
+                            <td class="px-6 py-4">Berbatasan dengan Desa Parakan Lima (Kec. Jatiluhur) dan Desa Sukatani (Kec. Sukatani)</td>
                         </tr>
                         <tr>
                             <td class="px-6 py-4 font-medium text-gray-900 bg-gray-50/50">Sebelah Barat</td>
-                            <td class="px-6 py-4">Berbatasan dengan Desa Sindanglaya atau Desa Panyindangan</td>
+                            <td class="px-6 py-4">Berbatasan dengan Desa Cibinong (Kec. Jatiluhur) dan Desa Tajursindang (Kec. Sukatani)</td>
                         </tr>
                     </tbody>
                 </table>

@@ -117,12 +117,12 @@
                             
         {{-- Potensi Desa (Tersambung ke kolom 'geografis') --}}
         <section class="bg-[#1e6306]/5 rounded-2xl p-8 border border-[#1e6306]/10">
-            <h2 class="text-3xl font-bold text-[#1e6306] mb-6">Potensi & Geografis Desa</h2>
+            <h2 class="text-3xl font-bold text-[#1e6306] mb-6">Potensi Desa</h2>
             <div class="text-[#313131] leading-8 text-justify">
                 @if($profil->geografis)
                     {!! nl2br(e($profil->geografis)) !!}
                 @else
-                    <p>Data potensi dan geografis desa belum ditambahkan.</p>
+                    <p>Data potensi desa belum ditambahkan.</p>
                 @endif
             </div>
         </section>

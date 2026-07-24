@@ -10,18 +10,31 @@ return new class extends Migration
 {
     Schema::create('statistik_penduduks', function (Blueprint $table) {
         $table->id();
-        $table->string('bulan');
-        $table->integer('tahun');
-        $table->string('dusun_rw');
-        
-        $table->integer('jumlah_kk')->default(0);
-        $table->integer('laki_laki')->default(0);
-        $table->integer('perempuan')->default(0);
-        
-        $table->integer('usia_0_14')->default(0);
-        $table->integer('usia_15_64')->default(0);
-        $table->integer('usia_65_keatas')->default(0);
-        
+        $table->string('tahun');
+        $table->string('bulan'); // Menyimpan angka bulan 01-12
+
+        // Data Awal
+        $table->integer('awal_lk')->default(0);
+        $table->integer('awal_pr')->default(0);
+
+        // Mutasi
+        $table->integer('mati_lk')->default(0);
+        $table->integer('mati_pr')->default(0);
+        $table->integer('lahir_lk')->default(0);
+        $table->integer('lahir_pr')->default(0);
+        $table->integer('pindah_lk')->default(0);
+        $table->integer('pindah_pr')->default(0);
+        $table->integer('datang_lk')->default(0);
+        $table->integer('datang_pr')->default(0);
+
+        // Kepemilikan Dokumen
+        $table->integer('jml_kk')->default(0);
+        $table->integer('wajib_ktp')->default(0);
+        $table->integer('ktp_sudah')->default(0);
+        $table->integer('ktp_belum')->default(0);
+        $table->integer('kk_sudah')->default(0);
+        $table->integer('kk_belum')->default(0);
+
         $table->timestamps();
     });
 }

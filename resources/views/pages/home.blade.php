@@ -1,14 +1,15 @@
-<x-layouts.app :title="($profil->nama_desa ?? 'Website Sukajaya') . ' - Beranda'">
+<x-layouts.app :title="($profil->nama_desa ?? 'Sukajaya') . ' Purwakarta'">
     
     @include('components.layouts.partials.hero-slider')
     
     <!-- 1. GRID MENU UTAMA (3 Menu: Agenda, APBDes, Organisasi - Style Hijau Gelap) -->
     <section class="max-w-6xl mx-auto px-4 py-12 grid grid-cols-1 md:grid-cols-3 gap-6">
         @php
+            // [REVISI]: Mengubah route organisasi menjadi struktur-organisasi
             $menus = [
                 ['route' => 'agenda', 'title' => 'Agenda Desa', 'emoji' => '📅'],
                 ['route' => 'apbdes', 'title' => 'APBDes', 'emoji' => '💰'],
-                ['route' => 'organisasi', 'title' => 'Organisasi Desa', 'emoji' => '👥'],
+                ['route' => 'struktur-organisasi', 'title' => 'Organisasi Desa', 'emoji' => '👥'],
             ];
         @endphp
 
@@ -73,7 +74,8 @@
     <section class="max-w-6xl mx-auto px-4 pb-16">
         <div class="flex justify-between items-end mb-6">
             <h2 class="text-2xl font-bold text-[#313131] border-b-4 border-[#1e6306] pb-2 inline-block">UMKM Unggulan Desa</h2>
-            <a href="/umkm" class="text-[#1e6306] font-bold hover:text-[#fac81b] transition-colors mb-2 text-sm md:text-base">
+            <!-- [REVISI]: Mengubah href manual menjadi pemanggilan route Laravel -->
+            <a href="{{ Route::has('umkm') ? route('umkm') : url('/umkm') }}" class="text-[#1e6306] font-bold hover:text-[#fac81b] transition-colors mb-2 text-sm md:text-base">
                 Lihat Semua &rarr;
             </a>
         </div>
@@ -122,19 +124,24 @@
         </div>
     </section>
     
-<!-- 4. SECTION PETA DESA -->
+    <!-- 4. SECTION PETA DESA -->
     <section class="max-w-6xl mx-auto px-4 pb-16">
         <h2 class="text-2xl font-bold mb-6 text-[#313131] border-b-4 border-[#1e6306] pb-2 inline-block">Peta Wilayah Desa</h2>
         
         <div class="w-full h-[500px] rounded-3xl overflow-hidden shadow-md border border-zinc-200 bg-zinc-100 relative group">
             
-            <iframe 
-                src="https://www.google.com/maps?q=Desa+Sukajaya,+Sukatani,+Purwakarta&output=embed" 
-                class="w-full h-full border-0" 
-                allowfullscreen="" 
-                loading="lazy" 
-                referrerpolicy="no-referrer-when-downgrade">
-            </iframe>
+            <!-- [REVISI]: Menggunakan data dinamis peta_embed dari database jika ada -->
+            @if(!empty($profil->peta_embed))
+                {!! $profil->peta_embed !!}
+            @else
+                <iframe 
+                    src="https://www.google.com/maps?q=Desa+Sukajaya,+Sukatani,+Purwakarta&output=embed" 
+                    class="w-full h-full border-0" 
+                    allowfullscreen="" 
+                    loading="lazy" 
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            @endif
             
         </div>
     </section>

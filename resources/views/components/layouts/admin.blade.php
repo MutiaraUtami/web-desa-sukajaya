@@ -35,6 +35,7 @@
                         ['route' => 'admin.berita', 'label' => 'Berita'],
                         ['route' => 'admin.umkm', 'label' => 'UMKM'],
                         ['route' => 'admin.apbdes', 'label' => 'APBDes'],
+                        ['route' => 'admin.realisasi-apbdes', 'label' => 'Realisasi APBDes'],
                         ['route' => 'admin.gallery', 'label' => 'Galeri Foto'],
                     ];
                 @endphp

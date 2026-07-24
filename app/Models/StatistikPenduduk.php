@@ -9,28 +9,42 @@ class StatistikPenduduk extends Model
 {
     use HasFactory;
 
-    // Ganti isi $fillable ini agar semua data diizinkan masuk ke database
-    protected $fillable = [
-        'bulan',
-        'tahun',
-        'dusun_rw',
-        'jumlah_kk',
-        'laki_laki',
-        'perempuan',
-        'usia_0_14',
-        'usia_15_64',
-        'usia_65_keatas',
-    ];
+    // WAJIB ADA: Buka gembok keamanan (Mass Assignment) biar inputan form bisa tersimpan ke database
+    protected $guarded = [];
 
-    // Accessor untuk total penduduk awal bulan
-    public function getTotalAwalAttribute(): int
-    {
-        return $this->awal_lk + $this->awal_pr;
+    // ==========================================================
+    // RUMUS AUTO-HITUNG (Ini yang bikin kolom JML & AKHIR otomatis)
+    // ==========================================================
+
+    public function getAwalJmlAttribute() { 
+        return (int)$this->awal_lk + (int)$this->awal_pr; 
+    }
+    
+    public function getMatiJmlAttribute() { 
+        return (int)$this->mati_lk + (int)$this->mati_pr; 
+    }
+    
+    public function getLahirJmlAttribute() { 
+        return (int)$this->lahir_lk + (int)$this->lahir_pr; 
+    }
+    
+    public function getPindahJmlAttribute() { 
+        return (int)$this->pindah_lk + (int)$this->pindah_pr; 
+    }
+    
+    public function getDatangJmlAttribute() { 
+        return (int)$this->datang_lk + (int)$this->datang_pr; 
     }
 
-    // Accessor untuk total penduduk akhir bulan
-    public function getTotalAkhirAttribute(): int
-    {
+    public function getAkhirLkAttribute() {
+        return (int)$this->awal_lk - (int)$this->mati_lk + (int)$this->lahir_lk - (int)$this->pindah_lk + (int)$this->datang_lk;
+    }
+    
+    public function getAkhirPrAttribute() {
+        return (int)$this->awal_pr - (int)$this->mati_pr + (int)$this->lahir_pr - (int)$this->pindah_pr + (int)$this->datang_pr;
+    }
+    
+    public function getAkhirJmlAttribute() {
         return $this->akhir_lk + $this->akhir_pr;
     }
 }

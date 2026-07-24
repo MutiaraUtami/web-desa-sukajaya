@@ -73,6 +73,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/berita', BeritaManager::class)->name('berita');
     Route::get('/umkm', UmkmManager::class)->name('umkm');
     Route::get('/apbdes', ApbdesManager::class)->name('apbdes');
+    Route::get('/realisasi-apbdes', \App\Livewire\Admin\RealisasiApbdesManager::class)->name('realisasi-apbdes');
     Route::get('/informasi-demografi', InformasiDemografiManager::class)->name('informasi-demografi');
     Route::get('/gallery', GalleryManager::class)->name('gallery'); 
 });

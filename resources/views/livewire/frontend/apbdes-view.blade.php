@@ -1,45 +1,70 @@
-<div class="max-w-5xl mx-auto px-4 py-10">
-    <h1 class="text-2xl font-bold mb-6 text-gray-800">APBDes (Anggaran Pendapatan dan Belanja Desa)</h1>
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold text-[#0e2206] mb-6">Informasi APBDes dan Realisasi Anggaran</h1>
 
-    <div class="mb-6 flex items-center bg-white p-4 rounded-lg shadow-sm border border-gray-100">
-            <label class="text-sm font-semibold text-gray-700 mr-3">Tahun Anggaran:</label>
-        <select wire:model.live="tahun" class="border border-gray-300 rounded-md p-2 text-sm focus:ring-[#1e6306] focus:border-[#1e6306] bg-gray-50 outline-none transition-colors min-w-[150px] cursor-pointer">
-            @foreach ($tahunList as $t)
-                <option value="{{ $t }}">{{ $t }}</option>
-            @endforeach
+    <!-- Dropdown Filter Tahun -->
+    <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-4 mb-8 flex items-center gap-4 w-full md:w-auto inline-flex">
+        <label for="tahun" class="text-sm font-medium text-gray-700 whitespace-nowrap">Tahun Anggaran:</label>
+        <select wire:model.live="tahun_anggaran" id="tahun" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm rounded-md">
+            @forelse($listTahun as $tahun)
+                <option value="{{ $tahun }}">{{ $tahun }}</option>
+            @empty
+                <option value="">Belum ada data</option>
+            @endforelse
         </select>
     </div>
 
-    <div class="bg-white rounded-lg shadow-md border border-gray-100 p-4">
-        {{-- Asumsi variabel $pdfUrl berisi path file PDF dari database untuk tahun yang dipilih --}}
-        @if (!empty($pdfUrl))
+    @if(!empty($listTahun))
+        <div class="space-y-12">
             
-            <div class="w-full h-[600px] md:h-[800px] rounded border border-gray-200 overflow-hidden bg-gray-100">
-                <iframe 
-                    src="{{ asset('storage/' . $pdfUrl) }}" 
-                    class="w-full h-full" 
-                    frameborder="0"
-                    title="Dokumen APBDes {{ $tahun }}">
-                </iframe>
-            </div>
-            
-            <div class="mt-4 flex justify-end">
-                <a href="{{ asset('storage/' . $pdfUrl) }}" target="_blank" download class="bg-[#1e6306] text-white px-5 py-2.5 rounded-lg shadow hover:bg-[#0e2206] transition-colors text-sm font-medium flex items-center gap-2">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
-                    </svg>
-                    Download PDF
-                </a>
+            <!-- 1. Bagian APBDes (Atas) -->
+            <div>
+                <h2 class="text-2xl font-bold text-[#0e2206] mb-4 border-b-2 border-brand-yellow pb-2 inline-block">
+                    APBDes (Anggaran Pendapatan dan Belanja Desa)
+                </h2>
+                @if($apbdesPdf)
+                    <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                        <iframe src="{{ asset('storage/'.$apbdesPdf) }}" width="100%" height="800px" class="rounded border"></iframe>
+                        <div class="mt-4 flex justify-end">
+                            <a href="{{ asset('storage/'.$apbdesPdf) }}" target="_blank" class="bg-[#1e6306] text-white px-6 py-2 rounded hover:bg-green-800 font-medium flex items-center gap-2 transition">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                                Download PDF APBDes
+                            </a>
+                        </div>
+                    </div>
+                @else
+                    <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded shadow-sm">
+                        <p class="text-yellow-700">Dokumen APBDes untuk tahun <strong>{{ $tahun_anggaran }}</strong> belum diunggah oleh pihak desa.</p>
+                    </div>
+                @endif
             </div>
 
-        @else
-            <div class="py-24 text-center flex flex-col items-center justify-center bg-gray-50 rounded border-2 border-dashed border-gray-200">
-                <svg class="w-16 h-16 text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                </svg>
-                <p class="text-lg font-bold text-gray-700">Dokumen PDF belum tersedia</p>
-                <p class="text-sm text-gray-500 mt-1">Belum ada file dokumen APBDes yang diunggah untuk tahun anggaran <span class="font-bold">{{ $tahun }}</span>.</p>
+            <!-- 2. Bagian Realisasi APBDes (Bawah) -->
+            <div>
+                <h2 class="text-2xl font-bold text-[#0e2206] mb-4 border-b-2 border-brand-yellow pb-2 inline-block">
+                    Laporan Realisasi APBDes
+                </h2>
+                @if($realisasiPdf)
+                    <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                        <iframe src="{{ asset('storage/'.$realisasiPdf) }}" width="100%" height="800px" class="rounded border"></iframe>
+                        <div class="mt-4 flex justify-end">
+                            <a href="{{ asset('storage/'.$realisasiPdf) }}" target="_blank" class="bg-[#1e6306] text-white px-6 py-2 rounded hover:bg-green-800 font-medium flex items-center gap-2 transition">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                                Download PDF Realisasi
+                            </a>
+                        </div>
+                    </div>
+                @else
+                    <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded shadow-sm">
+                        <p class="text-yellow-700">Dokumen Laporan Realisasi APBDes untuk tahun <strong>{{ $tahun_anggaran }}</strong> belum diunggah oleh pihak desa.</p>
+                    </div>
+                @endif
             </div>
-        @endif
-    </div>
+
+        </div>
+    @else
+        <!-- Jika database APBDes dan Realisasi masih kosong total -->
+        <div class="bg-gray-50 border-l-4 border-gray-400 p-4 rounded shadow-sm">
+            <p class="text-gray-700">Belum ada dokumen APBDes maupun Realisasi yang diunggah ke sistem saat ini.</p>
+        </div>
+    @endif
 </div>

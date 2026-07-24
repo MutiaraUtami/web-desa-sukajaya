@@ -9,46 +9,89 @@ use Livewire\Attributes\Layout;
 #[Layout('components.layouts.app')]
 class DemografisView extends Component
 {
-    public $filterRw = 'Semua';
+    public $filterTahun;
+    public $filterGender = 'semua';
+    public $listTahun = [];
+
+    public function mount()
+    {
+        $this->listTahun = StatistikPenduduk::pluck('tahun')->unique()->sortDesc()->values()->toArray();
+        $this->filterTahun = !empty($this->listTahun) ? $this->listTahun[0] : date('Y');
+    }
+
+    public function updatedFilterTahun() {
+        $this->updateChart();
+    }
+
+    public function updatedFilterGender() {
+        $this->updateChart();
+    }
+
+    public function updateChart()
+    {
+        $this->dispatch('update-chart', series: $this->getChartData());
+    }
+
+    public function getChartData()
+    {
+        $rawData = StatistikPenduduk::where('tahun', $this->filterTahun)->orderBy('bulan', 'asc')->get();
+        
+        $lkData = array_fill(0, 12, 0);
+        $prData = array_fill(0, 12, 0);
+        
+        foreach($rawData as $item) {
+            $idx = (int)$item->bulan - 1; 
+            $lkData[$idx] = (int)$item->akhir_lk;
+            $prData[$idx] = (int)$item->akhir_pr;
+        }
+
+        $series = [];
+        
+        if ($this->filterGender == 'semua' || $this->filterGender == 'lk') {
+            $series[] = ['name' => 'Laki-laki', 'data' => $lkData, 'color' => '#2563eb']; 
+        }
+        if ($this->filterGender == 'semua' || $this->filterGender == 'pr') {
+            $series[] = ['name' => 'Perempuan', 'data' => $prData, 'color' => '#e11d48']; 
+        }
+
+        return $series;
+    }
 
     public function render()
     {
-        // 1. Ambil list RW untuk Dropdown
-       $listRw = StatistikPenduduk::whereNotNull('dusun_rw')
-        ->where('dusun_rw', '!=', '')
-        ->distinct()
-        ->pluck('dusun_rw');
-
-        // 2. Query Data sesuai Filter
-       $query = StatistikPenduduk::query();
-    if ($this->filterRw !== 'Semua') {
-        $query->where('dusun_rw', $this->filterRw);
-    }
-
-        // Data untuk Tabel
-        $statistik = (clone $query)->orderBy('tahun', 'desc')->orderBy('bulan', 'desc')->get();
+        $data = StatistikPenduduk::where('tahun', $this->filterTahun)->orderBy('bulan', 'asc')->get();
         
-        // 3. Olah Data untuk Chart (Tahun Terlama ke Terbaru)
-        $rawData = (clone $query)->orderBy('tahun', 'asc')->get();
-        $labels = [];
-        $laki_laki = [];
-        $perempuan = [];
+        $totalPop = 0;
+        $avgMonthly = 0;
+        $peakMonth = '-';
 
-        foreach ($rawData->groupBy('tahun') as $tahun => $data) {
-            $labels[] = $tahun;
-            $laki_laki[] = $data->sum('laki_laki');
-            $perempuan[] = $data->sum('perempuan');
+        if ($data->count() > 0) {
+            $lastRecord = $data->last();
+            
+            // Logika baru: Sesuaikan angka kotak statistik dengan filter gender
+            if ($this->filterGender == 'lk') {
+                $totalPop = $lastRecord->akhir_lk;
+                $avgMonthly = round($data->avg('akhir_lk'), 1);
+                $peakRecord = $data->sortByDesc('akhir_lk')->first();
+            } elseif ($this->filterGender == 'pr') {
+                $totalPop = $lastRecord->akhir_pr;
+                $avgMonthly = round($data->avg('akhir_pr'), 1);
+                $peakRecord = $data->sortByDesc('akhir_pr')->first();
+            } else {
+                $totalPop = $lastRecord->akhir_jml;
+                $avgMonthly = round($data->avg('akhir_jml'), 1);
+                $peakRecord = $data->sortByDesc('akhir_jml')->first();
+            }
+            
+            $peakMonth = $peakRecord ? date('F', mktime(0,0,0,$peakRecord->bulan,1)) : '-';
         }
 
-        $chartData = [
-            'labels' => $labels,
-            'laki_laki' => $laki_laki,
-            'perempuan' => $perempuan
-        ];
-
-        // 4. Kirim sinyal (event) ke JavaScript untuk perbarui grafik!
-        $this->dispatch('update-chart', chartData: $chartData);
-
-        return view('livewire.frontend.demografis-view', compact('statistik', 'listRw', 'chartData'));
+        return view('livewire.frontend.demografis-view', [
+            'data' => $data,
+            'totalPop' => $totalPop,
+            'avgMonthly' => $avgMonthly,
+            'peakMonth' => $peakMonth,
+            'chartData' => $this->getChartData()
+        ]);
     }
 }
